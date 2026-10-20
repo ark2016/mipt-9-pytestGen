@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+# Files that mark the root of a Python project, checked from the target upwards.
 _PROJECT_MARKERS = ("pyproject.toml", "setup.cfg", "pytest.ini", ".git")
 
 

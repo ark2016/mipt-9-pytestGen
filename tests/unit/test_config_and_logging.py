@@ -69,3 +69,35 @@ def test_console_format_is_not_json() -> None:
     assert "hello" in stream.getvalue()
     with pytest.raises(json.JSONDecodeError):
         json.loads(stream.getvalue())
+
+
+def test_logger_created_before_configuration_uses_the_later_configuration() -> None:
+    """Module-level loggers are created at import time, before the CLI configures logging."""
+    early = get_logger("pytestgen.early", run="r2")
+    stream = io.StringIO()
+    configure_logging("INFO", LogFormat.JSON, stream=stream)
+    early.debug("hidden")
+    early.info("visible", n=1)
+    lines = stream.getvalue().strip().splitlines()
+    assert len(lines) == 1
+    record = json.loads(lines[0])
+    assert (record["event"], record["logger"], record["run"]) == (
+        "visible",
+        "pytestgen.early",
+        "r2",
+    )
+
+
+def test_default_stream_follows_a_later_replacement_of_stderr(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A closed stderr of an earlier CLI invocation must not break later log calls."""
+    first, second = io.StringIO(), io.StringIO()
+    monkeypatch.setattr("sys.stderr", first)
+    configure_logging("INFO", LogFormat.JSON)
+    first.close()
+    monkeypatch.setattr("sys.stderr", second)
+
+    get_logger("pytestgen.late").info("after_swap")
+
+    assert json.loads(second.getvalue())["event"] == "after_swap"

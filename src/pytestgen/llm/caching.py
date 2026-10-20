@@ -4,14 +4,15 @@ from __future__ import annotations
 
 from pytestgen.domain.llm import ChatRequest, ChatResponse
 from pytestgen.domain.models import LLMUsage
+from pytestgen.errors import LLMError
 from pytestgen.ports import LLMCache, LLMClient
 
 
 class CachingLLMClient:
     """Serves repeated requests from ``cache`` and counts what the run consumed.
 
-    ``usage.requests`` includes cache hits; token counters only count responses
-    that actually came from the model, since cached ones cost nothing.
+    ``usage.requests`` includes cache hits and requests that failed; token counters only
+    count responses that actually came from the model, since cached ones cost nothing.
     """
 
     def __init__(self, inner: LLMClient, cache: LLMCache | None = None) -> None:
@@ -33,7 +34,11 @@ class CachingLLMClient:
             if hit is not None:
                 self._usage += LLMUsage(requests=1, cache_hits=1)
                 return hit
-        response = self._inner.complete(request)
+        try:
+            response = self._inner.complete(request)
+        except LLMError:
+            self._usage += LLMUsage(requests=1)
+            raise
         self._usage += LLMUsage(
             requests=1,
             prompt_tokens=response.usage.prompt_tokens,

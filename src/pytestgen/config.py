@@ -65,6 +65,7 @@ class Settings(BaseSettings):
     repair_attempts: int = Field(default=2, ge=0, le=10)
     gap_iterations: int = Field(default=2, ge=0, le=10)
     max_cases_per_function: int = Field(default=12, gt=0)
+    max_minimize_runs: int = Field(default=12, ge=0)
     z3_timeout_ms: int = Field(default=2000, gt=0)
 
     # logging

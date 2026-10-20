@@ -10,6 +10,8 @@ import ast
 from dataclasses import dataclass
 from enum import StrEnum
 
+from pytestgen.domain.annotations import base_name, is_none, union_members
+
 
 class Kind(StrEnum):
     INT = "int"
@@ -135,7 +137,7 @@ def _from_node(node: ast.expr, text: str) -> ParamType:
     if len(members) != 1:
         return ParamType(Kind.OTHER, optional=optional, text=text)
     member = members[0]
-    kind = _KIND_BY_NAME.get(_base_name(member) or "", Kind.OTHER)
+    kind = _KIND_BY_NAME.get(base_name(member) or "", Kind.OTHER)
     element = Kind.OTHER
     if isinstance(member, ast.Subscript) and kind in (Kind.LIST, Kind.TUPLE):
         element = _element_kind(member.slice)
@@ -151,7 +153,7 @@ def _unwrap(node: ast.expr) -> ast.expr:
             return node
     if (
         isinstance(node, ast.Subscript)
-        and _base_name(node.value) == "Annotated"
+        and base_name(node.value) == "Annotated"
         and isinstance(node.slice, ast.Tuple)
         and node.slice.elts
     ):
@@ -159,40 +161,15 @@ def _unwrap(node: ast.expr) -> ast.expr:
     return node
 
 
-def _base_name(node: ast.expr) -> str | None:
-    if isinstance(node, ast.Subscript):
-        return _base_name(node.value)
-    if isinstance(node, ast.Name):
-        return node.id
-    if isinstance(node, ast.Attribute):
-        return node.attr
-    return None
-
-
 def _split_union(node: ast.expr) -> tuple[bool, list[ast.expr]]:
     """Flatten ``A | B``, ``Optional[A]`` and ``Union[A, B]`` into ``(has_none, members)``."""
-    node = _unwrap(node)
-    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.BitOr):
-        left_none, left = _split_union(node.left)
-        right_none, right = _split_union(node.right)
-        return left_none or right_none, [*left, *right]
-    if isinstance(node, ast.Constant) and node.value is None:
-        return True, []
-    if isinstance(node, ast.Subscript) and _base_name(node) in ("Optional", "Union"):
-        parts = node.slice.elts if isinstance(node.slice, ast.Tuple) else [node.slice]
-        has_none = _base_name(node) == "Optional"
-        members: list[ast.expr] = []
-        for part in parts:
-            part_none, part_members = _split_union(part)
-            has_none = has_none or part_none
-            members.extend(part_members)
-        return has_none, members
-    return False, [node]
+    members = union_members(node, _unwrap)
+    return any(is_none(m) for m in members), [m for m in members if not is_none(m)]
 
 
 def _element_kind(slice_node: ast.expr) -> Kind:
     first = (
         slice_node.elts[0] if isinstance(slice_node, ast.Tuple) and slice_node.elts else slice_node
     )
-    kind = _KIND_BY_NAME.get(_base_name(_unwrap(first)) or "", Kind.OTHER)
+    kind = _KIND_BY_NAME.get(base_name(_unwrap(first)) or "", Kind.OTHER)
     return kind if kind in SCALAR_KINDS else Kind.OTHER

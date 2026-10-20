@@ -7,6 +7,7 @@ import pytest
 
 from pytestgen.domain.llm import ChatRequest, ChatResponse, TokenUsage
 from pytestgen.domain.models import LLMUsage
+from pytestgen.errors import LLMConnectionError
 from pytestgen.llm import CachingLLMClient, DiskLLMCache
 from pytestgen.ports import LLMClient
 
@@ -106,3 +107,26 @@ def test_errors_propagate_and_are_not_counted_as_cache_entries(
     with pytest.raises(RuntimeError, match="down"):
         client.complete(make_request())
     assert client.usage == LLMUsage()
+
+
+class FailingLLM(FakeLLM):
+    def complete(self, request: ChatRequest) -> ChatResponse:
+        self.calls.append(request)
+        raise LLMConnectionError("connection refused")
+
+
+def test_failed_requests_are_counted_so_the_report_does_not_claim_zero(
+    make_request: RequestFactory,
+) -> None:
+    client = CachingLLMClient(FailingLLM())
+    for _ in range(3):
+        with pytest.raises(LLMConnectionError):
+            client.complete(make_request())
+    assert client.usage == LLMUsage(requests=3)
+
+
+def test_failures_are_not_cached(cache: DiskLLMCache, make_request: RequestFactory) -> None:
+    client = CachingLLMClient(FailingLLM(), cache)
+    with pytest.raises(LLMConnectionError):
+        client.complete(make_request())
+    assert cache.get("fake-model", make_request()) is None

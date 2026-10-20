@@ -15,6 +15,7 @@ import importlib
 import inspect
 import json
 import os
+import re
 import sys
 import traceback
 import types
@@ -108,8 +109,15 @@ def call_once(func: Callable[..., Any], inputs: Mapping[str, Any]) -> dict[str, 
     return describe_value(value)
 
 
+_ADDRESS = re.compile(r" at 0x[0-9a-fA-F]+")
+
+
 def _signature(result: Mapping[str, Any]) -> tuple[Any, ...]:
-    return result["kind"], result.get("value_repr"), result.get("exception_type")
+    """What must agree between runs; memory addresses in default reprs are ignored."""
+    value_repr = result.get("value_repr")
+    if result["kind"] == "not_literal" and isinstance(value_repr, str):
+        value_repr = _ADDRESS.sub(" at 0x?", value_repr)
+    return result["kind"], value_repr, result.get("exception_type")
 
 
 def observe(func: Callable[..., Any], inputs: Mapping[str, Any], repeats: int) -> dict[str, Any]:

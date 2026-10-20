@@ -170,6 +170,16 @@ def test_observe_stable_function() -> None:
     assert driver.observe(lambda x: x, {"x": 1}, 3) == {"kind": "returned", "value_repr": "1"}
 
 
+def test_observe_ignores_memory_addresses_of_fresh_objects() -> None:
+    kept: list[object] = []  # keep every object alive so each call gets a new address
+
+    def fresh(x: int) -> object:
+        kept.append(object())
+        return kept[-1]
+
+    assert driver.observe(fresh, {"x": 1}, 3)["kind"] == "not_literal"
+
+
 # ------------------------------------------------------------------ importing and resolving
 
 

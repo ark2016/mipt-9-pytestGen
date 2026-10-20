@@ -1,0 +1,140 @@
+name: PR tests
+
+# Dogfooding of the composite action in the repository root: for every pull request,
+# generate tests for the changed files under src/, comment the coverage gain and upload the
+# generated tests. Nothing is committed to the PR branch.
+#
+# LLM backend:
+#   * secret PYTESTGEN_LLM_API_KEY + variables PYTESTGEN_LLM_BASE_URL and PYTESTGEN_LLM_MODEL
+#     (optionally PYTESTGEN_LLM_JSON_MODE) -> that OpenAI-compatible cloud endpoint;
+#   * otherwise (also for PRs from forks, which get no secrets) -> a local llama.cpp server
+#     with Qwen2.5-Coder-0.5B-Instruct Q4_K_M, started with docker on the runner (CPU only).
+# PRs from forks get a read-only token: the run still happens, only the comment is skipped
+# (the report is in the job summary and in the artifact).
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, develop]
+    paths:
+      - "src/**/*.py"
+      - "action.yml"
+      - "scripts/pr_comment.py"
+      - ".github/workflows/pr-tests.yml"
+
+concurrency:
+  group: pr-tests-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  # llama.cpp server image and model: pinned (release build tag, Hugging Face commit).
+  LLAMA_IMAGE: ghcr.io/ggml-org/llama.cpp:server-b11459
+  MODEL_REPO: Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF
+  MODEL_REVISION: ebb2015119c907b064c512bf053e945850b5875f
+  MODEL_FILE: qwen2.5-coder-0.5b-instruct-q4_k_m.gguf
+  MODEL_ALIAS: qwen2.5-coder-0.5b-instruct
+  MODEL_DIR: ${{ github.workspace }}/.cache/models
+
+jobs:
+  generate:
+    name: Generate tests for changed files
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the action diffs against the PR base
+          persist-credentials: false # nothing here pushes
+
+      - name: Choose the LLM backend
+        id: backend
+        env:
+          API_KEY: ${{ secrets.PYTESTGEN_LLM_API_KEY }}
+          CLOUD_BASE_URL: ${{ vars.PYTESTGEN_LLM_BASE_URL }}
+          CLOUD_MODEL: ${{ vars.PYTESTGEN_LLM_MODEL }}
+          CLOUD_JSON_MODE: ${{ vars.PYTESTGEN_LLM_JSON_MODE }}
+        run: |
+          set -euo pipefail
+          if [ -n "$API_KEY" ] && [ -n "$CLOUD_BASE_URL" ]; then
+            if [ -z "$CLOUD_MODEL" ]; then
+              echo "::error::set the variable PYTESTGEN_LLM_MODEL together with PYTESTGEN_LLM_BASE_URL"
+              exit 1
+            fi
+            {
+              echo "mode=cloud"
+              echo "base_url=$CLOUD_BASE_URL"
+              echo "model=$CLOUD_MODEL"
+              echo "json_mode=${CLOUD_JSON_MODE:-json_schema}"
+            } >> "$GITHUB_OUTPUT"
+            echo "Backend: cloud endpoint, model $CLOUD_MODEL"
+          else
+            {
+              echo "mode=local"
+              echo "base_url=http://127.0.0.1:8080/v1"
+              echo "model=$MODEL_ALIAS"
+              echo "json_mode=json_schema"
+            } >> "$GITHUB_OUTPUT"
+            echo "Backend: local llama.cpp, $MODEL_FILE"
+          fi
+
+      - name: Cache the GGUF model
+        if: steps.backend.outputs.mode == 'local'
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.MODEL_DIR }}
+          key: gguf-${{ env.MODEL_REPO }}-${{ env.MODEL_REVISION }}-${{ env.MODEL_FILE }}
+
+      - name: Start llama.cpp server
+        if: steps.backend.outputs.mode == 'local'
+        run: |
+          set -euo pipefail
+          mkdir -p "$MODEL_DIR"
+          if [ ! -s "$MODEL_DIR/$MODEL_FILE" ]; then
+            curl --fail --location --retry 5 --retry-delay 5 --retry-all-errors \
+              --output "$MODEL_DIR/$MODEL_FILE.part" \
+              "https://huggingface.co/$MODEL_REPO/resolve/$MODEL_REVISION/$MODEL_FILE"
+            mv "$MODEL_DIR/$MODEL_FILE.part" "$MODEL_DIR/$MODEL_FILE"
+          fi
+          # one slot with an 8k context: the whole window belongs to a single request
+          docker run -d --name llm -p 127.0.0.1:8080:8080 \
+            -v "$MODEL_DIR:/models:ro" \
+            "$LLAMA_IMAGE" \
+            -m "/models/$MODEL_FILE" --alias "$MODEL_ALIAS" \
+            --host 0.0.0.0 --port 8080 -c 8192 -np 1 -t "$(nproc)"
+          for _ in $(seq 1 90); do
+            if curl --silent --fail http://127.0.0.1:8080/health > /dev/null; then
+              echo "llama.cpp is ready"
+              exit 0
+            fi
+            if [ "$(docker inspect -f '{{.State.Running}}' llm)" != "true" ]; then break; fi
+            sleep 2
+          done
+          echo "::error::llama.cpp did not become healthy"
+          docker logs llm | tail -n 50
+          exit 1
+
+      - name: Generate tests, comment, upload artifact
+        uses: ./
+        with:
+          llm-base-url: ${{ steps.backend.outputs.base_url }}
+          llm-model: ${{ steps.backend.outputs.model }}
+          # the cloud key goes only to the cloud endpoint, never to the throw-away local container
+          llm-api-key: ${{ steps.backend.outputs.mode == 'cloud' && secrets.PYTESTGEN_LLM_API_KEY || '' }}
+          llm-json-mode: ${{ steps.backend.outputs.json_mode }}
+          paths: src/**/*.py
+          max-files: "5"
+          strategy: hybrid
+          python-version: "3.12"
+          comment: "true"
+          github-token: ${{ github.token }}
+          file-timeout: "480"
+
+      - name: Stop llama.cpp server
+        if: always() && steps.backend.outputs.mode == 'local'
+        run: |
+          docker logs llm 2>&1 | tail -n 40 || true
+          docker rm --force llm || true

@@ -1,0 +1,158 @@
+name: Slow (real LLM)
+
+# Runs the `slow` tests and the CLI demo against a real llama.cpp server on the CI CPU.
+# The regular CI (ci.yml) never calls a real model: it always mocks the LLM.
+#
+# Triggers: manually, nightly, and on pushes to `slow/**` branches (so the workflow can be
+# exercised from a branch before it reaches the default branch).
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Qwen2.5-Coder size served by llama.cpp (Q4_K_M, CPU)"
+        type: choice
+        options: ["0.5b", "1.5b"]
+        default: "0.5b"
+  schedule:
+    - cron: "17 2 * * *"
+  push:
+    branches: ["slow/**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Keep in sync with docker-compose.yml.
+  LLAMA_IMAGE: ghcr.io/ggml-org/llama.cpp:server-b11459
+  LLM_PORT: "8080"
+
+jobs:
+  slow:
+    name: Real model (${{ inputs.model || '0.5b' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      MODEL_SIZE: ${{ inputs.model || '0.5b' }}
+      PYTESTGEN_LLM_BASE_URL: http://localhost:8080/v1
+      PYTESTGEN_SLOW_REQUIRE_LLM: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Pick the model
+        run: |
+          case "$MODEL_SIZE" in
+            0.5b) repo="Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF"; alias="qwen2.5-coder-0.5b-instruct" ;;
+            1.5b) repo="Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF"; alias="qwen2.5-coder-1.5b-instruct" ;;
+            *) echo "unknown model size: $MODEL_SIZE" >&2; exit 1 ;;
+          esac
+          {
+            echo "HF_REPO=$repo"
+            echo "HF_QUANT=Q4_K_M"
+            echo "PYTESTGEN_LLM_MODEL=$alias"
+            echo "LLAMA_CACHE_DIR=$RUNNER_TEMP/llama-cache"
+          } >> "$GITHUB_ENV"
+
+      - name: Restore the GGUF download
+        id: gguf-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/llama-cache
+          key: llama-gguf-${{ env.HF_REPO }}-${{ env.HF_QUANT }}
+
+      - name: Start llama.cpp server
+        run: |
+          mkdir -p "$LLAMA_CACHE_DIR"
+          docker run -d --name llm \
+            -p "$LLM_PORT:8080" \
+            -v "$LLAMA_CACHE_DIR:/models" \
+            -e LLAMA_CACHE=/models \
+            "$LLAMA_IMAGE" \
+            --hf-repo "$HF_REPO:$HF_QUANT" \
+            --alias "$PYTESTGEN_LLM_MODEL" \
+            --host 0.0.0.0 --port 8080 \
+            --ctx-size 8192 --parallel 1 --threads "$(nproc)" \
+            --jinja --no-webui
+
+      - name: Wait for the server
+        run: |
+          deadline=$((SECONDS + 900))
+          until curl -fsS "http://localhost:$LLM_PORT/health" >/dev/null 2>&1; do
+            if [ "$(docker inspect -f '{{.State.Running}}' llm)" != "true" ]; then
+              echo "llama.cpp container exited" >&2
+              docker logs llm | tail -n 100 >&2
+              exit 1
+            fi
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              echo "llama.cpp did not become healthy within 15 minutes" >&2
+              docker logs llm | tail -n 100 >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          curl -fsS "http://localhost:$LLM_PORT/v1/models"
+
+      - run: uv sync --frozen
+
+      - name: Slow tests (real model)
+        run: uv run pytest -m slow -v --timeout=1200
+
+      - name: CLI demo on examples/shop/pricing.py
+        run: >-
+          uv run pytestgen generate examples/shop/pricing.py
+          --project-root examples
+          --output out/test_pricing_generated.py
+          --report-md out/report.md
+          --report-json out/report.json
+          --no-cache
+          --fail-under-gain 0
+        env:
+          PYTESTGEN_LOG_LEVEL: WARNING
+          PYTESTGEN_CACHE_DIR: ${{ runner.temp }}/pytestgen-cache
+
+      - name: Report in the job summary
+        if: always()
+        run: |
+          if [ -f out/report.md ]; then
+            {
+              echo "## pytestgen demo (model: $PYTESTGEN_LLM_MODEL)"
+              echo
+              cat out/report.md
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No out/report.md was produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload generated tests and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytestgen-demo-${{ env.MODEL_SIZE }}
+          path: out/
+          if-no-files-found: warn
+
+      - name: llama.cpp log (tail)
+        if: always()
+        run: docker logs llm 2>&1 | tail -n 60 || true
+
+      - name: Stop the server and hand the cache back to the runner user
+        if: always()
+        run: |
+          docker rm -f llm || true
+          sudo chown -R "$(id -u):$(id -g)" "$LLAMA_CACHE_DIR" || true
+
+      # Saved even when a test failed, so the next run does not download the model again.
+      - name: Save the GGUF download
+        if: always() && steps.gguf-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/llama-cache
+          key: llama-gguf-${{ env.HF_REPO }}-${{ env.HF_QUANT }}

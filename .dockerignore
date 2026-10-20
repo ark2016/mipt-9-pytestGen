@@ -12,3 +12,9 @@ tests
 docs
 *.md
 !README.md
+examples
+scripts
+.coverage
+.env
+Makefile
+docker-compose.yml

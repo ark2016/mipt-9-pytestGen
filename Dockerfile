@@ -23,7 +23,7 @@ COPY --from=builder /app/.venv /app/.venv
 ENV PATH="/app/.venv/bin:${PATH}" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTESTGEN_CACHE_DIR=/work/.pytestgen/cache
+    PYTESTGEN_CACHE_DIR=/home/app/.pytestgen/cache
 WORKDIR /work
 USER app
 ENTRYPOINT ["pytestgen"]

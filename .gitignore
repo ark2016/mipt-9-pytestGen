@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+
+# tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+coverage.json
+htmlcov/
+junit*.xml
+
+# pytestgen runtime
+.pytestgen/
+out/
+models/
+
+# env and editors
+.env
+.idea/
+.vscode/
+.DS_Store

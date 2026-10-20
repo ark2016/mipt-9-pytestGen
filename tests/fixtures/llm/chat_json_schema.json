@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"verdicts\": [\n    {\n      \"case_id\": \"c1\",\n      \"verdict\": \"ok\",\n      \"explanation\": \"matches the docstring\"\n    },\n    {\n      \"case_id\": \"c2\",\n      \"verdict\": \"suspect\",\n      \"explanation\": \"negative input should raise\"\n    }\n  ],\n  \"extra_inputs\": [\n    {\n      \"value\": 7,\n      \"low\": 7,\n      \"high\": 7\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1760000000,
+  "model": "qwen2.5-coder-1.5b-instruct",
+  "system_fingerprint": "b4991-5f8c1a2",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 96,
+    "prompt_tokens": 402,
+    "total_tokens": 498
+  },
+  "id": "chatcmpl-9fT2LzR7bC",
+  "timings": {
+    "prompt_n": 402,
+    "prompt_ms": 412.7,
+    "predicted_n": 96,
+    "predicted_ms": 3180.4,
+    "predicted_per_second": 30.18
+  }
+}

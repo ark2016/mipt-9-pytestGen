@@ -8,21 +8,27 @@ from rich.table import Table
 
 from pytestgen.domain.models import FunctionCoverageDelta, GenerationReport
 from pytestgen.report._format import (
+    branch_gain,
+    branches_text,
+    branches_transition,
     format_inputs,
     format_usage,
     group_dropped,
+    line_gain,
+    lines_text,
+    lines_transition,
     more_note,
     one_line,
-    percent,
     ranked_functions,
     signed_gain,
-    transition,
 )
 
 
-def _gain_text(value: float) -> str:
+def _gain_text(value: float | None) -> str:
     """Gain as rich markup: green when positive, red when negative."""
     text = signed_gain(value)
+    if value is None:
+        return text
     if round(value, 1) > 0:
         return f"[green]{text}[/green]"
     if round(value, 1) < 0:
@@ -49,15 +55,15 @@ def _summary_table(report: GenerationReport) -> Table:
     table = Table("Metric", "Before", "After", "Gain", title="Coverage")
     table.add_row(
         "Lines",
-        percent(delta.before.line_percent),
-        percent(delta.after.line_percent),
-        _gain_text(delta.line_gain),
+        lines_text(delta.before),
+        lines_text(delta.after),
+        _gain_text(line_gain(delta)),
     )
     table.add_row(
         "Branches",
-        percent(delta.before.branch_percent),
-        percent(delta.after.branch_percent),
-        _gain_text(delta.branch_gain),
+        branches_text(delta.before),
+        branches_text(delta.after),
+        _gain_text(branch_gain(delta)),
     )
     return table
 
@@ -72,8 +78,8 @@ def _origin_table(report: GenerationReport) -> Table:
 def _function_row(item: FunctionCoverageDelta) -> tuple[str, str, str]:
     return (
         escape(item.function),
-        transition(item.before.line_percent, item.after.line_percent),
-        transition(item.before.branch_percent, item.after.branch_percent),
+        lines_transition(item.before, item.after),
+        branches_transition(item.before, item.after),
     )
 
 

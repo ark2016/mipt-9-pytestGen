@@ -9,6 +9,7 @@ import pytest
 
 from pytestgen.domain.models import (
     CoverageDelta,
+    CoverageSummary,
     DroppedTest,
     DropReason,
     FunctionCoverageDelta,
@@ -17,7 +18,7 @@ from pytestgen.domain.models import (
 )
 from pytestgen.ports import ReportRenderer
 from pytestgen.report import MarkdownRenderer
-from pytestgen.report._format import signed_gain
+from pytestgen.report._format import branches_text, lines_text, signed_gain
 from pytestgen.report.markdown import _code
 
 
@@ -131,7 +132,9 @@ def test_optional_sections_absent(
     ):
         assert absent not in text
     assert "model" not in text
-    assert "| Lines | 100.0% | 100.0% | +0.0 pp |" in text
+    assert "| Lines | n/a | n/a | n/a |" in text
+    assert "| Branches | n/a | n/a | n/a |" in text
+    assert "100.0%" not in text
 
 
 def test_text_is_ascii_free_of_emoji(
@@ -244,3 +247,12 @@ def test_bug_inputs_keep_internal_whitespace(minimal_report: GenerationReport) -
 def test_free_text_still_collapsed(minimal_report: GenerationReport) -> None:
     bug = SuspectedBug("f", {}, "o", "why \n   not")
     assert "  - why not" in _rendered_with(minimal_report, suspected_bugs=(bug,))
+
+
+def test_unmeasured_coverage_is_na_not_100_percent() -> None:
+    empty = CoverageSummary(0, 0, 0, 0)
+    assert lines_text(empty) == "n/a"
+    assert branches_text(empty) == "n/a"
+    assert lines_text(CoverageSummary(0, 4, 0, 0)) == "0.0%"
+    assert branches_text(CoverageSummary(1, 2, 1, 2)) == "50.0%"
+    assert signed_gain(None) == "n/a"

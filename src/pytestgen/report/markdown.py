@@ -14,15 +14,19 @@ from pytestgen.domain.models import (
     SuspectedBug,
 )
 from pytestgen.report._format import (
+    branch_gain,
+    branches_text,
+    branches_transition,
     format_inputs,
     format_usage,
     group_dropped,
+    line_gain,
+    lines_text,
+    lines_transition,
     more_note,
     one_line,
-    percent,
     ranked_functions,
     signed_gain,
-    transition,
 )
 
 
@@ -83,15 +87,15 @@ class MarkdownRenderer:
         rows = [
             (
                 "Lines",
-                percent(delta.before.line_percent),
-                percent(delta.after.line_percent),
-                signed_gain(delta.line_gain),
+                lines_text(delta.before),
+                lines_text(delta.after),
+                signed_gain(line_gain(delta)),
             ),
             (
                 "Branches",
-                percent(delta.before.branch_percent),
-                percent(delta.after.branch_percent),
-                signed_gain(delta.branch_gain),
+                branches_text(delta.before),
+                branches_text(delta.after),
+                signed_gain(branch_gain(delta)),
             ),
         ]
         table = _table(("Metric", "Before", "After", "Gain"), rows)
@@ -112,8 +116,8 @@ class MarkdownRenderer:
         rows = [
             (
                 _code_cell(f.function),
-                transition(f.before.line_percent, f.after.line_percent),
-                transition(f.before.branch_percent, f.after.branch_percent),
+                lines_transition(f.before, f.after),
+                branches_transition(f.before, f.after),
             )
             for f in shown
         ]

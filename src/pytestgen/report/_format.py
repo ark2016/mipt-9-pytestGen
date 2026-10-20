@@ -7,6 +7,7 @@ from collections.abc import Mapping
 
 from pytestgen.domain.models import (
     CoverageDelta,
+    CoverageSummary,
     DroppedTest,
     DropReason,
     FunctionCoverageDelta,
@@ -14,20 +15,53 @@ from pytestgen.domain.models import (
 )
 
 MAX_FUNCTION_ROWS = 15
+NOT_AVAILABLE = "n/a"
 
 
 def percent(value: float) -> str:
     return f"{value:.1f}%"
 
 
-def signed_gain(value: float) -> str:
-    """Percentage-point gain with an explicit sign; ``-0.0`` is shown as ``+0.0``."""
+def signed_gain(value: float | None) -> str:
+    """Percentage-point gain with an explicit sign; ``-0.0`` is shown as ``+0.0``.
+
+    ``None`` (nothing was measured) is shown as ``n/a``.
+    """
+    if value is None:
+        return NOT_AVAILABLE
     return f"{round(value, 1) + 0.0:+.1f} pp"
 
 
-def transition(before: float, after: float) -> str:
-    """``before -> after``; ASCII only so output is safe on any stream encoding."""
-    return f"{percent(before)} -> {percent(after)}"
+def lines_text(summary: CoverageSummary) -> str:
+    """Line coverage; ``n/a`` when no statements were measured (0/0 is not 100%)."""
+    return percent(summary.line_percent) if summary.total_lines else NOT_AVAILABLE
+
+
+def branches_text(summary: CoverageSummary) -> str:
+    """Branch coverage; ``n/a`` when there are no branches to measure."""
+    return percent(summary.branch_percent) if summary.total_branches else NOT_AVAILABLE
+
+
+def lines_transition(before: CoverageSummary, after: CoverageSummary) -> str:
+    return f"{lines_text(before)} -> {lines_text(after)}"
+
+
+def branches_transition(before: CoverageSummary, after: CoverageSummary) -> str:
+    return f"{branches_text(before)} -> {branches_text(after)}"
+
+
+def line_gain(delta: CoverageDelta) -> float | None:
+    """Line gain, or ``None`` when neither side measured any statement."""
+    if not (delta.before.total_lines or delta.after.total_lines):
+        return None
+    return delta.line_gain
+
+
+def branch_gain(delta: CoverageDelta) -> float | None:
+    """Branch gain, or ``None`` when neither side has any branch."""
+    if not (delta.before.total_branches or delta.after.total_branches):
+        return None
+    return delta.branch_gain
 
 
 def more_note(hidden: int) -> str:

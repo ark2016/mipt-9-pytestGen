@@ -217,3 +217,20 @@ def test_console_hanging_test_is_the_unfinished_line(stdout: str, stderr: str) -
 
 def test_console_banner_without_any_test_line() -> None:
     assert parse_console("collecting ...\n", BANNER).hanging is None
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "Failed: Timeout (&gt;0.5s) from pytest-timeout.",
+        "Failed: Timeout &gt;10.0s",
+    ],
+)
+def test_junit_pytest_timeout_failure_is_timeout(tmp_path: Path, message: str) -> None:
+    xml = (
+        '<testsuites><testsuite><testcase classname="pytestgen_tests.test_x" name="test_a"'
+        f' file="pytestgen_tests/test_x.py"><failure message="{message}">trace</failure>'
+        "</testcase></testsuite></testsuites>"
+    )
+    (outcome,) = parse_junit(xml, tmp_path).outcomes
+    assert outcome.status is TestStatus.TIMEOUT

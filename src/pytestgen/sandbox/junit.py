@@ -9,8 +9,8 @@ from pathlib import Path
 
 from pytestgen.domain.models import TestOutcome, TestStatus
 
-_TIMEOUT = re.compile(r"Timeout\s*>\s*\d")
-"""pytest-timeout reports ``Failed: Timeout >10.0s``."""
+_TIMEOUT = re.compile(r"Timeout\s*\(?>\s*\d")
+"""pytest-timeout reports ``Failed: Timeout (>10.0s) from pytest-timeout.`` (older: ``>10.0s``)."""
 _COLLECTION = "collection failure"
 
 

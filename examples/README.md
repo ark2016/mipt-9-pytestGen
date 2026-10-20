@@ -7,4 +7,4 @@
 - `shop/cart.py` — класс `Cart`: методы экземпляра (`add_item`, `remove_item`, `total`) идут по свободному пути LLM, статический `Cart.parse_qty` — по гибридному.
 - `textkit.py` — строковые утилиты: `slugify`, `is_palindrome` (keyword-only опции), `truncate` (суффикс по умолчанию), `classify_password` (правила длины и классов символов).
 - `tests/test_pricing_partial.py` — три существующих теста, покрывают только часть `pricing.py`: базовая точка для замера прироста покрытия.
-- `pyproject.toml` — корень демо-проекта: `pythonpath = ["."]`, `testpaths = ["tests"]`, запуск из `examples/`.
+- `pytest.ini` — корень демо-проекта: `pythonpath = .`, `testpaths = tests`, запуск из `examples/`.

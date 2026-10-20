@@ -18,6 +18,7 @@ from pytestgen.domain.models import (
     BranchTarget,
     FunctionInfo,
     GenerationReport,
+    IntrospectionResult,
     ModuleInfo,
     Observation,
     RunResult,
@@ -32,6 +33,17 @@ class ModuleAnalyzer(Protocol):
     """Static analysis of one Python module. Must not import or execute it."""
 
     def analyze(self, path: Path, project_root: Path) -> ModuleInfo: ...
+
+
+@runtime_checkable
+class ModuleIntrospector(Protocol):
+    """Imports the module in the sandbox and inspects it at runtime (``inspect`` module).
+
+    Used to fail fast on non-importable modules and to resolve signatures that
+    decorators or dynamic code change compared to the source text.
+    """
+
+    def introspect(self, project_root: Path, module: ModuleInfo) -> IntrospectionResult: ...
 
 
 # --------------------------------------------------------------------------- symbolic

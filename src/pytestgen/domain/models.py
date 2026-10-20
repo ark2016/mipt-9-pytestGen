@@ -189,6 +189,20 @@ class ModuleInfo:
 # --------------------------------------------------------------------------- solving and observing
 
 
+@dataclass(frozen=True, slots=True)
+class IntrospectionResult:
+    """What importing the module in the sandbox revealed (``inspect`` at runtime)."""
+
+    importable: bool
+    error: str | None = None
+    signatures: Mapping[str, str] = field(default_factory=dict)
+    """Qualified name -> ``str(inspect.signature(obj))`` for every analysed function."""
+    type_hints: Mapping[str, Mapping[str, str]] = field(default_factory=dict)
+    """Qualified name -> {parameter or "return": resolved annotation repr}."""
+    coroutines: frozenset[str] = frozenset()
+    """Qualified names that are coroutine functions at runtime."""
+
+
 class SolveStatus(StrEnum):
     SAT = "sat"
     UNSAT = "unsat"

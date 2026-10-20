@@ -218,7 +218,9 @@ def test_run_timeout_is_an_error_and_no_file_is_written(
     project: Path, settings: Settings, llm: ScriptedLLMServer
 ) -> None:
     """F1: a sandbox run that never finished must not produce an unverified file."""
-    impatient = settings.model_copy(update={"run_timeout_s": 0.3})
+    # Every pytest session in the sandbox outlives the limit, independent of machine speed.
+    (project / "conftest.py").write_text("import time\n\ntime.sleep(5)\n", encoding="utf-8")
+    impatient = settings.model_copy(update={"run_timeout_s": 1.5})
     output = project / "tests" / "test_pricing_timeout.py"
     with pytest.raises(PytestgenError, match="did not finish"):
         generate(

@@ -55,7 +55,7 @@ class GenerateRequest:
     strategy: Strategy = Strategy.HYBRID
     minimize: bool = False
     existing_tests: tuple[Path, ...] | None = None
-    """``None``: discover the project's tests that mention the module."""
+    """``None``: discover the project's tests that import the module."""
     dry_run: bool = False
     overwrite: bool = False
 

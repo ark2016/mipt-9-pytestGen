@@ -113,7 +113,7 @@ class ProjectTestFiles(Protocol):
         ...
 
     def discover(self, project_root: Path, module_name: str, exclude: Path) -> tuple[Path, ...]:
-        """The project's own test files that mention the module, without ``exclude``."""
+        """The project's own test files that import the module, without ``exclude``."""
         ...
 
     def write(self, path: Path, text: str) -> Path:

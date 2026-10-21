@@ -443,7 +443,9 @@ class InMemoryFiles:
     def is_generated(self, path: Path) -> bool:
         return path in self.generated or path in self.written
 
-    def discover(self, project_root: Path, module_name: str, exclude: Path) -> tuple[Path, ...]:
+    def discover(
+        self, project_root: Path, module_name: str, exclude: Path, names: Collection[str] = ()
+    ) -> tuple[Path, ...]:
         self.discover_calls.append((project_root, module_name, exclude))
         return self.discovered
 

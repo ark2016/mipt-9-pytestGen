@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import re
 import string
+from collections.abc import Collection
 from pathlib import Path
 
 from pytestgen.codegen import GENERATED_HEADER
@@ -24,13 +25,15 @@ def is_generated(path: Path) -> bool:
     return _starts_generated(head)
 
 
-def discover_existing_tests(project_root: Path, module_name: str, output: Path) -> tuple[Path, ...]:
+def discover_existing_tests(
+    project_root: Path, module_name: str, output: Path, names: Collection[str] = ()
+) -> tuple[Path, ...]:
     """Test files under ``project_root`` that import the module.
 
     Matches ``test_*.py`` and ``*_test.py``; skips hidden and virtual-environment
     directories, the ``output`` file and files pytestgen generated earlier.
     """
-    imports = import_pattern(module_name)
+    imports = import_pattern(module_name, names)
     skipped = output.resolve()
     found: list[Path] = []
     for directory, subdirs, files in os.walk(project_root):
@@ -42,18 +45,21 @@ def discover_existing_tests(project_root: Path, module_name: str, output: Path) 
     return tuple(found)
 
 
-def import_pattern(module_name: str) -> re.Pattern[str]:
+def import_pattern(module_name: str, names: Collection[str] = ()) -> re.Pattern[str]:
     """Regex for statements importing ``module_name`` under any dotted suffix of its name.
 
     ``pkg.calc`` matches ``import pkg.calc``, ``from calc import f`` and
     ``from pkg import (x, calc)``; a mere mention of the word ``calc`` does not.
+    With ``names`` (public names defined in the module), ``from pkg import grade``
+    matches too, since packages often re-export what their modules define.
     """
     parts = module_name.split(".")
+    imported = "|".join(re.escape(name) for name in (parts[-1], *sorted(names)))
     suffixes = [".".join(parts[i:]) for i in range(len(parts))]
     parents = [".".join(parts[i:-1]) for i in range(len(parts) - 1)]
     alternatives = [rf"(?:from|import)\s+{re.escape(name)}\b" for name in suffixes]
     alternatives += [
-        rf"from\s+{re.escape(parent)}\s+import\s+(?:\([^)]*|[^\n]*)\b{re.escape(parts[-1])}\b"
+        rf"from\s+{re.escape(parent)}\s+import\s+(?:\([^)]*|[^\n]*)\b(?:{imported})\b"
         for parent in parents
     ]
     return re.compile(rf"^[ \t]*(?:{'|'.join(alternatives)})", re.MULTILINE)

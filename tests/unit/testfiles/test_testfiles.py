@@ -7,6 +7,7 @@ import pytest
 from pytestgen.codegen import GENERATED_HEADER, render_test_module
 from pytestgen.domain.models import ModuleInfo, TestSuite
 from pytestgen.testfiles import LocalTestFiles, discover_existing_tests, is_generated
+from pytestgen.testfiles.discovery import import_pattern
 
 
 def write(root: Path, relative: str, text: str) -> Path:
@@ -28,6 +29,26 @@ def test_discovery_skips_hidden_dirs_the_output_and_generated_files(tmp_path: Pa
     write(tmp_path, "tests/test_old_gen.py", f'{GENERATED_HEADER} for calc."""\nimport calc\n')
     found = discover_existing_tests(tmp_path, "pkg.calc", output)
     assert found == (suffix.resolve(), wanted.resolve())
+
+
+@pytest.mark.parametrize(
+    ("text", "imported"),
+    [
+        ("import pkg.calc\n", True),
+        ("import pkg.calc as c\n", True),
+        ("from pkg.calc import grade\n", True),
+        ("from calc import grade\n", True),
+        ("    from pkg import calc\n", True),
+        ("from pkg import (\n    other,\n    calc,\n)\n", True),
+        ("# calc is mentioned in a comment\nproject = calc_utils\n", False),
+        ("import calculator\n", False),
+        ("from pkg import calculator\n", False),
+        ("from other import calc_tools\n", False),
+        ("x = 'from pkg import calc' if False else None\n", False),
+    ],
+)
+def test_import_pattern_requires_an_import_of_the_module(text: str, imported: bool) -> None:
+    assert bool(import_pattern("pkg.calc").search(text)) is imported
 
 
 def test_the_detected_header_is_the_one_the_renderer_writes(tmp_path: Path) -> None:

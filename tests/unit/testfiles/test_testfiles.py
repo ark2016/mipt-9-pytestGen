@@ -51,6 +51,17 @@ def test_import_pattern_requires_an_import_of_the_module(text: str, imported: bo
     assert bool(import_pattern("pkg.calc").search(text)) is imported
 
 
+def test_import_pattern_accepts_re_exported_public_names(tmp_path: Path) -> None:
+    pattern = import_pattern("pkg.calc", {"grade"})
+    assert pattern.search("from pkg import grade\n")
+    assert not pattern.search("from pkg import grades\n")
+    assert not pattern.search("from other import grade\n")
+    reexport = write(tmp_path, "tests/test_reexport.py", "from pkg import grade\n")
+    output = tmp_path / "tests" / "test_out.py"
+    assert discover_existing_tests(tmp_path, "pkg.calc", output) == ()
+    assert discover_existing_tests(tmp_path, "pkg.calc", output, {"grade"}) == (reexport.resolve(),)
+
+
 def test_the_detected_header_is_the_one_the_renderer_writes(tmp_path: Path) -> None:
     """One constant on both sides: the renderer's header must be recognised as generated."""
     module = ModuleInfo(path=tmp_path / "calc.py", module_name="calc", source="")

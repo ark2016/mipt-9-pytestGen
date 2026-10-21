@@ -160,9 +160,18 @@ class GenerateTests:
     ) -> tuple[Path, ...]:
         if request.existing_tests is not None:
             return tuple(path.resolve() for path in request.existing_tests)
-        found = self._services.files.discover(root, module.module_name, output)
+        found = self._services.files.discover(
+            root, module.module_name, output, public_names(module)
+        )
         _log.info("existing_tests_discovered", count=len(found))
         return found
+
+
+def public_names(module: ModuleInfo) -> frozenset[str]:
+    """Top-level functions and classes of ``module`` whose names do not start with ``_``."""
+    defined = [f.name for f in module.functions if not f.is_method]
+    defined += [c.name for c in module.classes]
+    return frozenset(name for name in defined if not name.startswith("_"))
 
 
 def coverage_score(coverage: FileCoverage | None) -> int:

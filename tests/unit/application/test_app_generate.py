@@ -28,6 +28,7 @@ from orchestration_support import (
 )
 from structlog.testing import capture_logs
 
+from pytestgen.analysis import AstModuleAnalyzer
 from pytestgen.application import (
     FreeFormWriter,
     GenerationBudget,
@@ -39,7 +40,7 @@ from pytestgen.application import (
     TestRepairer,
 )
 from pytestgen.application.collaborators import ProjectTestFiles, UsageMeter
-from pytestgen.application.generate import GenerateRequest, GenerateTests
+from pytestgen.application.generate import GenerateRequest, GenerateTests, public_names
 from pytestgen.application.skeleton import SkeletonBuilder
 from pytestgen.application.targets import select_functions
 from pytestgen.concolic import Z3HintSolver
@@ -1163,3 +1164,16 @@ def test_existing_tests_come_from_the_store_and_the_output_is_excluded(
     ((root, module_name, exclude),) = files.discover_calls
     assert (root, module_name, exclude) == (rig.root.resolve(), "calc", rig.default_output)
     assert rig.runner.requests[0].existing_tests == (found,)
+
+
+def test_public_names_are_top_level_functions_and_classes(tmp_path: Path) -> None:
+    source = (
+        "def grade(x):\n    return x\n\n\n"
+        "def _helper():\n    pass\n\n\n"
+        "class Account:\n    def deposit(self, amount):\n        return amount\n\n\n"
+        "class _Hidden:\n    pass\n"
+    )
+    path = tmp_path / "calc.py"
+    path.write_text(source, encoding="utf-8")
+    module = AstModuleAnalyzer().analyze(path, tmp_path)
+    assert public_names(module) == {"grade", "Account"}

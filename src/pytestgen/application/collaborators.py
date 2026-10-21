@@ -112,8 +112,14 @@ class ProjectTestFiles(Protocol):
         """Whether ``path`` is a file pytestgen wrote earlier (safe to replace)."""
         ...
 
-    def discover(self, project_root: Path, module_name: str, exclude: Path) -> tuple[Path, ...]:
-        """The project's own test files that import the module, without ``exclude``."""
+    def discover(
+        self, project_root: Path, module_name: str, exclude: Path, names: Collection[str] = ()
+    ) -> tuple[Path, ...]:
+        """The project's own test files that import the module, without ``exclude``.
+
+        ``names`` are the module's public top-level names: a test importing one of them
+        from a parent package (a re-export) counts as importing the module.
+        """
         ...
 
     def write(self, path: Path, text: str) -> Path:

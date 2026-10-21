@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Collection
 from pathlib import Path
 
 from pytestgen.testfiles.discovery import discover_existing_tests, is_generated
@@ -16,8 +17,10 @@ class LocalTestFiles:
     def is_generated(self, path: Path) -> bool:
         return is_generated(path)
 
-    def discover(self, project_root: Path, module_name: str, exclude: Path) -> tuple[Path, ...]:
-        return discover_existing_tests(project_root, module_name, exclude)
+    def discover(
+        self, project_root: Path, module_name: str, exclude: Path, names: Collection[str] = ()
+    ) -> tuple[Path, ...]:
+        return discover_existing_tests(project_root, module_name, exclude, names)
 
     def write(self, path: Path, text: str) -> Path:
         """Write ``text`` (UTF-8, ``\n`` line ends), creating missing parent directories."""

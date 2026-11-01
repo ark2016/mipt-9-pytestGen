@@ -1,0 +1,156 @@
+name: Benchmark (hybrid vs llm)
+
+# Runs `pytestgen generate` with both strategies on every module of examples/ against a real
+# llama.cpp server (Qwen2.5-Coder, Q4_K_M, CI CPU) and collects the JSON reports.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["bench/**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  LLAMA_IMAGE: ghcr.io/ggml-org/llama.cpp:server-b11459
+  LLM_PORT: "8080"
+
+jobs:
+  bench:
+    name: Bench (${{ matrix.model }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        model: ["0.5b", "1.5b"]
+    env:
+      MODEL_SIZE: ${{ matrix.model }}
+      PYTESTGEN_LLM_BASE_URL: http://localhost:8080/v1
+      PYTESTGEN_SLOW_REQUIRE_LLM: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Pick the model
+        run: |
+          case "$MODEL_SIZE" in
+            0.5b) repo="Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF"; alias="qwen2.5-coder-0.5b-instruct" ;;
+            1.5b) repo="Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF"; alias="qwen2.5-coder-1.5b-instruct" ;;
+            *) echo "unknown model size: $MODEL_SIZE" >&2; exit 1 ;;
+          esac
+          {
+            echo "HF_REPO=$repo"
+            echo "HF_QUANT=Q4_K_M"
+            echo "PYTESTGEN_LLM_MODEL=$alias"
+            echo "LLAMA_CACHE_DIR=$RUNNER_TEMP/llama-cache"
+          } >> "$GITHUB_ENV"
+
+      - name: Restore the GGUF download
+        id: gguf-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/llama-cache
+          key: llama-gguf-${{ env.HF_REPO }}-${{ env.HF_QUANT }}
+
+      - name: Start llama.cpp server
+        run: |
+          mkdir -p "$LLAMA_CACHE_DIR"
+          docker run -d --name llm \
+            -p "$LLM_PORT:8080" \
+            -v "$LLAMA_CACHE_DIR:/models" \
+            -e LLAMA_CACHE=/models \
+            "$LLAMA_IMAGE" \
+            --hf-repo "$HF_REPO:$HF_QUANT" \
+            --alias "$PYTESTGEN_LLM_MODEL" \
+            --host 0.0.0.0 --port 8080 \
+            --ctx-size 8192 --parallel 1 --threads "$(nproc)" \
+            --jinja --no-webui
+
+      - name: Wait for the server
+        run: |
+          deadline=$((SECONDS + 900))
+          until curl -fsS "http://localhost:$LLM_PORT/health" >/dev/null 2>&1; do
+            if [ "$(docker inspect -f '{{.State.Running}}' llm)" != "true" ]; then
+              echo "llama.cpp container exited" >&2
+              docker logs llm | tail -n 100 >&2
+              exit 1
+            fi
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              echo "llama.cpp did not become healthy within 15 minutes" >&2
+              docker logs llm | tail -n 100 >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          curl -fsS "http://localhost:$LLM_PORT/v1/models"
+
+      - run: uv sync --frozen
+
+      - name: Generate with both strategies for every example module
+        env:
+          PYTESTGEN_LOG_LEVEL: WARNING
+          PYTESTGEN_CACHE_ENABLED: "false"
+        run: |
+          mkdir -p out
+          echo "module,strategy,exit_code,wall_s" > out/runs.csv
+          for module in shop/pricing shop/cart textkit; do
+            name=$(basename "$module")
+            for strategy in hybrid llm; do
+              tag="$name-$strategy"
+              start=$SECONDS
+              set +e
+              uv run pytestgen generate "examples/$module.py" \
+                --project-root examples --strategy "$strategy" \
+                --output "out/test_${tag}.py" \
+                --report-md "out/${tag}.md" --report-json "out/${tag}.json" \
+                > "out/${tag}.console.txt" 2> "out/${tag}.log"
+              code=$?
+              set -e
+              echo "$name,$strategy,$code,$((SECONDS - start))" >> out/runs.csv
+              cat "out/${tag}.console.txt"
+            done
+          done
+          cat out/runs.csv
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Benchmark (model: $PYTESTGEN_LLM_MODEL)"
+            echo
+            for f in out/*.md; do echo; cat "$f"; done
+          } >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bench-${{ env.MODEL_SIZE }}
+          path: out/
+          if-no-files-found: warn
+
+      - name: llama.cpp log (tail)
+        if: always()
+        run: docker logs llm 2>&1 | tail -n 60 || true
+
+      - name: Stop the server and hand the cache back to the runner user
+        if: always()
+        run: |
+          docker rm -f llm || true
+          sudo chown -R "$(id -u):$(id -g)" "$LLAMA_CACHE_DIR" || true
+
+      # Saved even when a test failed, so the next run does not download the model again.
+      - name: Save the GGUF download
+        if: always() && steps.gguf-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/llama-cache
+          key: llama-gguf-${{ env.HF_REPO }}-${{ env.HF_QUANT }}

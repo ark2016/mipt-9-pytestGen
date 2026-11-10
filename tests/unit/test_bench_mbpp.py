@@ -60,3 +60,6 @@ def test_already_wrong():
     metrics = bench.summarize([row])
     assert metrics["reference_pass_rate"] == 0.5
     assert metrics["mutation_score"] == 1.0
+    assert metrics["reference_pass_and_kill_rate"] == 0.5
+    assert len(row.tests_with_kills) == 1
+    assert row.tests_with_kills[0].endswith("::test_boundary")

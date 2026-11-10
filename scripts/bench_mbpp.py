@@ -64,6 +64,7 @@ class Result:
     detail: str = ""
     generated_executed: int = 0
     passed_reference: int = 0
+    tests_with_kills: list[str] = field(default_factory=list)
     mutants: list[dict[str, str]] = field(default_factory=list)
     llm_requests: int = 0
     llm_tokens: int = 0
@@ -250,6 +251,7 @@ def check_mutations(
     result: Result,
 ) -> None:
     eligible = 0
+    killing_tests: set[str] = set()
     for mutation_id, (site, source) in zip(
         range(MAX_CANDIDATES), mutations(task.code, task.task_id), strict=False
     ):
@@ -261,15 +263,19 @@ def check_mutations(
             status = "not_detected_by_mbpp"
         else:
             eligible += 1
-            status = mutant_status(runner, target, generated, passing)
+            status, failed_nodes = mutant_status(runner, target, generated, passing)
+            killing_tests.update(failed_nodes)
         result.mutants.append({"id": f"{mutation_id}:{site}", "status": status})
         if eligible >= max_mutants:
             break
+    result.tests_with_kills = sorted(killing_tests)
 
 
-def mutant_status(runner: SuiteRunner, target: Path, generated: str, passing: set[str]) -> str:
+def mutant_status(
+    runner: SuiteRunner, target: Path, generated: str, passing: set[str]
+) -> tuple[str, set[str]]:
     if not passing:
-        return "survived"
+        return "survived", set()
     run = run_tests(runner, target, generated)
     executed = {
         test.nodeid
@@ -277,17 +283,19 @@ def mutant_status(runner: SuiteRunner, target: Path, generated: str, passing: se
         if test.status in (TestStatus.PASSED, TestStatus.FAILED)
     }
     if not valid_run(run) or not passing <= executed:
-        return "unverified_mutant"
-    return (
-        "killed"
-        if any(test.nodeid in passing and test.status is TestStatus.FAILED for test in run.outcomes)
-        else "survived"
-    )
+        return "unverified_mutant", set()
+    failed = {
+        test.nodeid
+        for test in run.outcomes
+        if test.nodeid in passing and test.status is TestStatus.FAILED
+    }
+    return ("killed" if failed else "survived"), failed
 
 
 def summarize(rows: list[Result]) -> dict[str, int | float | None]:
     tests = sum(row.generated_executed for row in rows)
     passed = sum(row.passed_reference for row in rows)
+    tests_with_kills = sum(len(row.tests_with_kills) for row in rows)
     killed = sum(mutant["status"] == "killed" for row in rows for mutant in row.mutants)
     survived = sum(mutant["status"] == "survived" for row in rows for mutant in row.mutants)
     unverified = sum(
@@ -306,6 +314,8 @@ def summarize(rows: list[Result]) -> dict[str, int | float | None]:
         "generated_executed": tests,
         "passed_reference": passed,
         "reference_pass_rate": passed / tests if tests else None,
+        "tests_passing_reference_and_killing_mutant": tests_with_kills,
+        "reference_pass_and_kill_rate": tests_with_kills / tests if tests else None,
         "eligible_mutants": eligible,
         "killed": killed,
         "survived": survived,

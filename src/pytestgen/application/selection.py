@@ -18,6 +18,7 @@ from pytestgen.domain.models import (
     RunResult,
     TestCaseSpec,
     TestOutcome,
+    TestStatus,
     TestSuite,
 )
 from pytestgen.log import get_logger
@@ -56,6 +57,7 @@ class Minimized:
     coverage: FileCoverage | None
     """Coverage of the minimized suite (the last accepted run), ``None`` if nothing changed."""
     runs: int
+    last_accepted: RunResult | None = None
 
 
 class SuiteSelector:
@@ -121,6 +123,7 @@ class SuiteSelector:
         if reference is None:
             return Minimized(suite, (), None, 0)
         current, coverage, dropped, runs = suite, None, [], 0
+        last_accepted = None
         candidates: list[FreeFormTest | TestCaseSpec] = [
             *reversed(suite.free_tests),
             *(c for c in reversed(suite.cases) if _is_removable_case(c)),
@@ -134,9 +137,10 @@ class SuiteSelector:
             runs += 1
             if _preserves(reference, result, file_name):
                 current, coverage = trial, result.coverage
+                last_accepted = result
                 dropped.append(_no_gain(candidate))
         _log.info("minimized", removed=len(dropped), runs=runs)
-        return Minimized(current, tuple(dropped), coverage, runs)
+        return Minimized(current, tuple(dropped), coverage, runs, last_accepted)
 
 
 def without_free_test(suite: TestSuite, test: FreeFormTest) -> TestSuite:
@@ -156,6 +160,21 @@ def _file_of(path: str) -> str:
 
 def _in_generated_file(outcome: TestOutcome, file_name: str) -> bool:
     return _file_of(outcome.nodeid.partition(_NODE_SEPARATOR)[0]) == file_name
+
+
+def executed_items(
+    suite: TestSuite, result: RunResult, file_name: str
+) -> tuple[tuple[TestCaseSpec | FreeFormTest, bool], ...]:
+    """Group pytest results by generated item; a class passes if all its nodes pass."""
+    nodes = map_test_nodes(suite)
+    found: dict[int, tuple[TestCaseSpec | FreeFormTest, bool]] = {}
+    for outcome in result.outcomes:
+        item = _resolve(nodes, outcome.nodeid, file_name)
+        if item is not None:
+            passed = outcome.status is TestStatus.PASSED
+            key = id(item)
+            found[key] = item, passed and (key not in found or found[key][1])
+    return tuple(found.values())
 
 
 def _resolve(nodes: NodeMap, nodeid: str, file_name: str) -> TestCaseSpec | FreeFormTest | None:

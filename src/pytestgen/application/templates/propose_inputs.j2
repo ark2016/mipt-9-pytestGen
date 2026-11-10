@@ -1,0 +1,13 @@
+Function under test (module {{ module }}):
+{{ source }}
+
+{% if constants %}Module constants used:
+{{ constants }}
+
+{% endif %}Parameters: {{ parameters }}
+An automatic solver could not find arguments for these branch outcomes:
+{{ listing }}
+
+Give up to {{ max_inputs }} different argument sets that make execution take these outcomes. Each set must satisfy the path condition of its target. Use only JSON values (numbers, strings, true, false, null, lists, objects) and include every parameter that has no default.
+Reply with JSON only:
+{{ example }}

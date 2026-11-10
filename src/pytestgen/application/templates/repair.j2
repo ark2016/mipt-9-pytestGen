@@ -1,0 +1,16 @@
+This pytest test does not pass. Fix the TEST, not the code: the code under test is the source of truth, so change inputs or expected values to match what it actually does.
+
+Test:
+{{ test }}
+
+Result: {{ status }}
+```
+{{ failure }}
+```{% if source %}
+
+Code under test:
+{{ source }}
+{% endif %}
+
+Keep the test name {{ name }}. No network, no files outside tmp_path, no sleep.
+Answer with one python code block containing the complete fixed test with its imports.

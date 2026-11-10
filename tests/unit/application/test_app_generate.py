@@ -345,6 +345,8 @@ def test_failing_free_test_is_repaired_and_kept(build: Builder) -> None:
     assert [name for name, _ in repairer.calls] == ["test_bump_adds"]
     assert "assert failed in test_bump_adds" in repairer.calls[0][1]
     assert "FIXED" in rig.default_output.read_text(encoding="utf-8")
+    assert report.passed_after_repair == 1
+    assert report.passed_first_run == report.kept_tests - 1
     assert report.dropped == ()
     assert Stage.REPAIR in rig.stages.names
 

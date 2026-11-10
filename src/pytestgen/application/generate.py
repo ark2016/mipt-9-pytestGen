@@ -12,7 +12,7 @@ from pytestgen.application.attribution import OriginAttribution
 from pytestgen.application.budget import GenerationBudget
 from pytestgen.application.collaborators import ProjectTestFiles, Repairer, UsageMeter
 from pytestgen.application.coverage_delta import compute_delta
-from pytestgen.application.execution import SuiteExecutor
+from pytestgen.application.execution import Execution, SuiteExecutor
 from pytestgen.application.fill import SlotFiller
 from pytestgen.application.outputs import check_writable, default_output, module_stem
 from pytestgen.application.progress import StageAnnouncer
@@ -258,7 +258,13 @@ class _Run:
         filler = self._svc.filler
         if self._request.strategy is Strategy.HYBRID and is_hybrid_target(function):
             return filler.hybrid(self._root, self._module, function)
-        return filler.free_form(self._module, function, avoid_names=self._state.free_names)
+        missing = self._before.missing_lines if self._before is not None else ()
+        return filler.free_form(
+            self._module,
+            function,
+            uncovered_lines=sorted(n for n in missing if function.contains_line(n)),
+            avoid_names=self._state.free_names,
+        )
 
     # ------------------------------------------------------------------ run + repair
 
@@ -281,6 +287,7 @@ class _Run:
                     tests=len(execution.result.outcomes),
                 )
                 return False
+            state.track_results(execution, self._executor.file_name)
             selection = self._svc.selector.select(
                 state.suite, execution.result, self._executor.file_name
             )
@@ -431,6 +438,10 @@ class _Run:
             self._executor.file_name,
         )
         self._state.apply_minimized(result)
+        if result.last_accepted is not None:
+            self._state.track_results(
+                Execution(result.last_accepted, result.suite), self._executor.file_name
+            )
         if result.coverage is not None:
             self._coverage = result.coverage
 
@@ -449,12 +460,15 @@ class _Run:
         if after is None:
             _log.warning("coverage_unavailable", module=self._module.module_name)
         counts = Counter(item.origin for item in nodes.values())
+        first, repaired = self._state.pass_counts(tuple(nodes.values()))
         report = GenerationReport(
             module=self._module.module_name,
             strategy=self._request.strategy,
             output_path=written,
             delta=compute_delta(self._module, self._before, after),
             kept_tests=len(nodes),
+            passed_first_run=first,
+            passed_after_repair=repaired,
             dropped=self._state.dropped,
             suspected_bugs=self._state.bugs,
             by_origin=OriginAttribution(self._executor.run_plain).stats(

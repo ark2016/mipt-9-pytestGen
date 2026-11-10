@@ -8,6 +8,7 @@ from pytestgen.application.execution import Execution
 from pytestgen.application.selection import (
     Minimized,
     Selection,
+    executed_items,
     replace_free_test,
     without_free_test,
 )
@@ -54,6 +55,7 @@ class Filled:
 class Checkpoint:
     suite: TestSuite
     dropped: int
+    passing: frozenset[int]
 
 
 class RunState:
@@ -71,6 +73,9 @@ class RunState:
         self._attempted: set[str] = set()
         self._infeasible: set[str] = set()
         self._rewritten: dict[str, SuspectedBug] = {}
+        # Keep the objects alive so Python cannot reuse their IDs during this run.
+        self._first: dict[int, tuple[TestCaseSpec | FreeFormTest, bool]] = {}
+        self._passing: frozenset[int] = frozenset()
 
     # ------------------------------------------------------------------ reading
 
@@ -128,6 +133,24 @@ class RunState:
         self._suite = execution.suite
         self._dropped.extend(execution.dropped)
 
+    def track_results(self, execution: Execution, file_name: str) -> None:
+        items = executed_items(execution.suite, execution.result, file_name)
+        for item, passed in items:
+            self._first.setdefault(id(item), (item, passed))
+        self._passing = frozenset(id(item) for item, passed in items if passed)
+
+    def pass_counts(self, kept: tuple[TestCaseSpec | FreeFormTest, ...]) -> tuple[int, int]:
+        first = repaired = 0
+        for item in kept:
+            key = id(item)
+            if key not in self._passing:
+                continue
+            if isinstance(item, FreeFormTest) and item.repair_attempts:
+                repaired += 1
+            elif self._first[key][1]:
+                first += 1
+        return first, repaired
+
     def apply_selection(self, selection: Selection) -> None:
         """Adopt the suite without its failing data-driven cases."""
         self._suite = selection.suite
@@ -157,7 +180,7 @@ class RunState:
     # ------------------------------------------------------------------ rollback
 
     def checkpoint(self) -> Checkpoint:
-        return Checkpoint(self._suite, len(self._dropped))
+        return Checkpoint(self._suite, len(self._dropped), self._passing)
 
     def rollback(self, checkpoint: Checkpoint) -> None:
         """Undo suite changes and drop records since ``checkpoint``.
@@ -165,4 +188,5 @@ class RunState:
         What was learnt (attempted targets, suspected bugs) is kept on purpose.
         """
         self._suite = checkpoint.suite
+        self._passing = checkpoint.passing
         del self._dropped[checkpoint.dropped :]

@@ -99,7 +99,13 @@ class MarkdownRenderer:
             ),
         ]
         table = _table(("Metric", "Before", "After", "Gain"), rows)
-        return [*table, "", f"Kept tests: **{report.kept_tests}**"]
+        return [
+            *table,
+            "",
+            f"Kept tests: **{report.kept_tests}**",
+            f"- Passed on first run: **{report.passed_first_run}**",
+            f"- Passed after repair: **{report.passed_after_repair}**",
+        ]
 
     @staticmethod
     def _origins(stats: Sequence[OriginStats]) -> list[str]:

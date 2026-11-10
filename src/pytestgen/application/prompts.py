@@ -12,6 +12,8 @@ import textwrap
 from collections.abc import Collection, Mapping, Sequence
 from typing import Final
 
+from jinja2 import Environment, PackageLoader, StrictUndefined
+
 from pytestgen.domain.llm import ChatMessage, ResponseSchema, Role
 from pytestgen.domain.models import (
     BranchTarget,
@@ -30,6 +32,12 @@ _MAX_REPR_CHARS: Final = 120
 _MAX_CONSTANTS: Final = 5
 _MAX_CONSTANT_CHARS: Final = 200
 _NOT_COVERED_MARK: Final = "  # <- not covered"
+
+_TEMPLATES = Environment(
+    loader=PackageLoader("pytestgen.application"),
+    undefined=StrictUndefined,
+    autoescape=False,  # noqa: S701 -- text prompts, never HTML
+)
 
 SYSTEM_PROMPT: Final = (
     "You are a precise Python testing assistant. "
@@ -146,11 +154,6 @@ def module_constants(module: ModuleInfo, function: FunctionInfo) -> str:
     return "\n".join(found[:_MAX_CONSTANTS])
 
 
-def _constants_block(module: ModuleInfo, function: FunctionInfo) -> str:
-    constants = module_constants(module, function)
-    return f"Module constants used:\n{_fenced(constants)}\n\n" if constants else ""
-
-
 def describe_params(parameters: Sequence[Parameter]) -> str:
     """``price: float, years: int = 0`` style one-liner."""
     items = []
@@ -193,18 +196,10 @@ def oracle_review_messages(
 ) -> list[ChatMessage]:
     """Prompt asking whether each recorded ``(index, case)`` agrees with the documentation."""
     behaviours = "\n".join(f"[{index}] {describe_case(function, case)}" for index, case in numbered)
-    user = (
-        f"Function under test (module {module.module_name}):\n"
-        f"{_fenced(truncate_source(function.source))}\n\n"
-        f"Recorded behaviour of the current implementation:\n{behaviours}\n\n"
-        "For each numbered line decide whether the result is what the docstring and the "
-        "function name promise.\n"
-        '- "ok": consistent with the documented intent.\n'
-        '- "suspicious": clearly contradicts the documentation, so the code may have a bug. '
-        "Give a one-sentence explanation.\n"
-        'If unsure, answer "ok". Ignore code style.\n'
-        "Reply with JSON only, one entry per line above:\n"
-        '{"reviews": [{"index": 0, "verdict": "ok", "explanation": ""}]}'
+    user = _TEMPLATES.get_template("oracle_review.j2").render(
+        module=module.module_name,
+        source=_fenced(truncate_source(function.source)),
+        behaviours=behaviours,
     )
     return _messages(user)
 
@@ -235,19 +230,15 @@ def propose_inputs_messages(
         for number, target in enumerate(targets, start=1)
     )
     fields = ", ".join(f'"{p.name}": <value>' for p in function.call_parameters)
-    user = (
-        f"Function under test (module {module.module_name}):\n"
-        f"{_fenced(truncate_source(function.source))}\n\n"
-        f"{_constants_block(module, function)}"
-        f"Parameters: {describe_params(function.call_parameters)}\n"
-        "An automatic solver could not find arguments for these branch outcomes:\n"
-        f"{listing}\n\n"
-        f"Give up to {max_inputs} different argument sets that make execution take these "
-        "outcomes. Each set must satisfy the path condition of its target. "
-        "Use only JSON values (numbers, strings, true, false, null, lists, objects) and include "
-        "every parameter that has no default.\n"
-        "Reply with JSON only:\n"
-        f'{{"inputs": [{{{fields}}}]}}'
+    constants = module_constants(module, function)
+    user = _TEMPLATES.get_template("propose_inputs.j2").render(
+        module=module.module_name,
+        source=_fenced(truncate_source(function.source)),
+        constants=_fenced(constants) if constants else "",
+        parameters=describe_params(function.call_parameters),
+        listing=listing,
+        max_inputs=max_inputs,
+        example=f'{{"inputs": [{{{fields}}}]}}',
     )
     return _messages(user)
 
@@ -268,32 +259,21 @@ def write_tests_messages(
     kind = "method" if function.is_method else "function"
     if function.is_method:
         source = class_summary(module, function, source)
-    parts = [
-        f"Write pytest tests for ONE {kind}: {function.qualname}.",
-        f"Import line (use exactly this): {import_line(module, function)}",
-        f"Source:\n{_fenced(source)}",
-    ]
-    if constants := module_constants(module, function):
-        parts.append(f"Module constants used:\n{_fenced(constants)}")
-    if uncovered_lines:
-        parts.append(
-            f'Lines marked "{_NOT_COVERED_MARK.strip()}" are not run by existing tests: '
-            "write tests that reach them."
-        )
-    if hint := _construction_hint(function):
-        parts.append(hint)
-    rules = [
-        "- Use only pytest, the standard library and the module above.",
-        "- No network, no files outside tmp_path, no sleep, no print, no randomness.",
-        "- Deterministic, small tests with plain assert statements; "
-        "use pytest.raises for expected exceptions.",
-        f"- At most {max_tests} tests, named test_{function.name}_<something>.",
-    ]
-    if avoid_names:
-        rules.append(f"- Do not reuse these test names: {', '.join(sorted(avoid_names))}.")
-    parts.append("Rules:\n" + "\n".join(rules))
-    parts.append("Answer with one python code block containing the imports and the tests.")
-    return _messages("\n\n".join(parts))
+    constants = module_constants(module, function)
+    user = _TEMPLATES.get_template("write_tests.j2").render(
+        kind=kind,
+        qualname=function.qualname,
+        import_line=import_line(module, function),
+        signature=f"{function.name}({describe_params(function.call_parameters)})",
+        source=_fenced(source),
+        constants=_fenced(constants) if constants else "",
+        uncovered=bool(uncovered_lines),
+        hint=_construction_hint(function),
+        max_tests=max_tests,
+        name=function.name,
+        avoid=", ".join(sorted(avoid_names)),
+    )
+    return _messages(user)
 
 
 def _construction_hint(function: FunctionInfo) -> str:
@@ -321,17 +301,11 @@ def repair_messages(
     function: FunctionInfo | None, test_name: str, test_source: str, outcome: TestOutcome
 ) -> list[ChatMessage]:
     """Prompt asking to fix a failing test so that it matches the code's actual behaviour."""
-    parts = [
-        "This pytest test does not pass. Fix the TEST, not the code: the code under test is "
-        "the source of truth, so change inputs or expected values to match what it actually "
-        "does.",
-        f"Test:\n{_fenced(test_source.strip())}",
-        f"Result: {outcome.status.value}\n```\n{failure_text(outcome)}\n```",
-    ]
-    if function is not None:
-        parts.append(f"Code under test:\n{_fenced(truncate_source(function.source))}")
-    parts.append(
-        f"Keep the test name `{test_name}`. No network, no files outside tmp_path, no sleep.\n"
-        "Answer with one python code block containing the complete fixed test with its imports."
+    user = _TEMPLATES.get_template("repair.j2").render(
+        test=_fenced(test_source.strip()),
+        status=outcome.status.value,
+        failure=failure_text(outcome),
+        source=_fenced(truncate_source(function.source)) if function is not None else "",
+        name=f"`{test_name}`",
     )
-    return _messages("\n\n".join(parts))
+    return _messages(user)

@@ -504,3 +504,5 @@ class GenerationReport:
     llm_usage: LLMUsage = field(default_factory=LLMUsage)
     duration_s: float = 0.0
     model: str = ""
+    passed_first_run: int = 0
+    passed_after_repair: int = 0

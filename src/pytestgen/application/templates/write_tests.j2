@@ -1,0 +1,34 @@
+Write pytest tests for ONE {{ kind }}: {{ qualname }}.
+
+Import line (use exactly this): {{ import_line }}
+
+Signature: {{ signature }}
+
+Source:
+{{ source }}
+{% if constants %}
+
+Module constants used:
+{{ constants }}
+{% endif %}{% if uncovered %}
+
+Lines marked "# <- not covered" are not run by existing tests: write tests that reach them.
+{% endif %}{% if hint %}
+
+{{ hint }}
+{% endif %}
+
+Example style (unrelated function; do not copy its name or imports):
+```python
+def test_clamp_caps_values_above_limit():
+    assert clamp(11, low=0, high=10) == 10
+```
+
+Rules:
+- Use only pytest, the standard library and the module above.
+- No network, no files outside tmp_path, no sleep, no print, no randomness.
+- Deterministic, small tests with plain assert statements; use pytest.raises for expected exceptions.
+- At most {{ max_tests }} tests, named test_{{ name }}_<something>.
+{% if avoid %}- Do not reuse these test names: {{ avoid }}.
+{% endif %}
+Answer with one python code block containing the imports and the tests.

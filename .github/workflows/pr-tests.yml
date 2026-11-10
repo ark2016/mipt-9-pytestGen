@@ -1,6 +1,6 @@
 name: PR tests
 
-# Dogfooding of the composite action in the repository root: for every pull request,
+# Dogfooding of the composite action in the repository root: for pull requests labeled gen-tests,
 # generate tests for the changed files under src/, comment the coverage gain and upload the
 # generated tests. Nothing is committed to the PR branch.
 #
@@ -14,17 +14,8 @@ name: PR tests
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, labeled]
     branches: [main, develop]
-    paths:
-      - "src/**/*.py"
-      - "action.yml"
-      - "scripts/pr_comment.py"
-      - ".github/workflows/pr-tests.yml"
-
-concurrency:
-  group: pr-tests-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -41,6 +32,12 @@ env:
 
 jobs:
   generate:
+    if: >-
+      contains(github.event.pull_request.labels.*.name, 'gen-tests') &&
+      (github.event.action != 'labeled' || github.event.label.name == 'gen-tests')
+    concurrency:
+      group: pr-tests-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     name: Generate tests for changed files
     runs-on: ubuntu-latest
     timeout-minutes: 45

@@ -1,0 +1,113 @@
+name: MBPP mutation benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["bench/mbpp"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mbpp-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  LLAMA_IMAGE: ghcr.io/ggml-org/llama.cpp:server-b11459
+  LLM_PORT: "8080"
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    env:
+      HF_REPO: Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF
+      HF_REVISION: f86cb2c1fa58255f8052cc32aeede1b7482d4361
+      HF_FILE: qwen2.5-coder-1.5b-instruct-q4_k_m.gguf
+      PYTESTGEN_LLM_BASE_URL: http://localhost:8080/v1
+      PYTESTGEN_LLM_MODEL: qwen2.5-coder-1.5b-instruct
+      PYTESTGEN_LOG_LEVEL: WARNING
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/llama-cache
+          key: mbpp-${{ env.HF_REVISION }}-${{ env.HF_FILE }}
+      - name: Start llama.cpp server
+        run: |
+          LLAMA_CACHE_DIR="$RUNNER_TEMP/llama-cache"
+          mkdir -p "$LLAMA_CACHE_DIR"
+          if [ ! -s "$LLAMA_CACHE_DIR/$HF_FILE" ]; then
+            curl -fsSL --retry 3 \
+              "https://huggingface.co/$HF_REPO/resolve/$HF_REVISION/$HF_FILE" \
+              -o "$LLAMA_CACHE_DIR/$HF_FILE.part"
+            mv "$LLAMA_CACHE_DIR/$HF_FILE.part" "$LLAMA_CACHE_DIR/$HF_FILE"
+          fi
+          docker run -d --name llm \
+            -p "127.0.0.1:$LLM_PORT:8080" \
+            -v "$LLAMA_CACHE_DIR:/models:ro" \
+            "$LLAMA_IMAGE" \
+            -m "/models/$HF_FILE" \
+            --alias "$PYTESTGEN_LLM_MODEL" \
+            --host 0.0.0.0 --port 8080 \
+            --ctx-size 8192 --parallel 1 --threads "$(nproc)" \
+            --jinja --no-webui
+
+      - name: Wait for the server
+        run: |
+          deadline=$((SECONDS + 900))
+          until curl -fsS "http://localhost:$LLM_PORT/health" >/dev/null 2>&1; do
+            if [ "$(docker inspect -f '{{.State.Running}}' llm)" != "true" ]; then
+              echo "llama.cpp container exited" >&2
+              docker logs llm | tail -n 100 >&2
+              exit 1
+            fi
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              echo "llama.cpp did not become healthy within 15 minutes" >&2
+              docker logs llm | tail -n 100 >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          curl -fsS "http://localhost:$LLM_PORT/v1/models"
+
+      - run: uv sync --frozen
+
+      - name: Evaluate ten tasks
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: >-
+          uv run --frozen python scripts/bench_mbpp.py --shard "$SHARD" --shards 10
+          --output "out/mbpp-shard-$SHARD.json"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mbpp-shard-${{ matrix.shard }}
+          path: out/mbpp-shard-*.json
+
+  aggregate:
+    runs-on: ubuntu-latest
+    needs: evaluate
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: mbpp-shard-*
+          path: out/shards
+      - name: Combine the 100 task results
+        run: |
+          uv run --frozen python scripts/bench_mbpp.py --combine out/shards
+          uv run --frozen python -c 'import json; s = json.load(open("out/mbpp-report.json"))["summary"]; assert s["llm_tokens"] > 0, "No real model token usage"; print("\n".join(f"- {k}: {v}" for k, v in s.items()))' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mbpp-report
+          path: out/mbpp-report.json

@@ -27,3 +27,6 @@ models/
 .idea/
 .vscode/
 .DS_Store
+
+# Local defense materials
+/docs/presentation/

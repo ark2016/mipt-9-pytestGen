@@ -1,0 +1,58 @@
+﻿{
+    "deck":  "C:\\programming\\магистратура\\ПСдЗИИ\\mipt-9-pytestGen\\docs\\presentation\\pytestgen-defense.pptx",
+    "slide_count":  8,
+    "renderer":  "Microsoft PowerPoint COM",
+    "issues":  [
+
+               ],
+    "native_objects":  [
+                           {
+                               "slide":  1,
+                               "shapes":  5,
+                               "tables":  0,
+                               "charts":  0
+                           },
+                           {
+                               "slide":  2,
+                               "shapes":  22,
+                               "tables":  0,
+                               "charts":  0
+                           },
+                           {
+                               "slide":  3,
+                               "shapes":  19,
+                               "tables":  0,
+                               "charts":  0
+                           },
+                           {
+                               "slide":  4,
+                               "shapes":  6,
+                               "tables":  1,
+                               "charts":  1
+                           },
+                           {
+                               "slide":  5,
+                               "shapes":  7,
+                               "tables":  1,
+                               "charts":  0
+                           },
+                           {
+                               "slide":  6,
+                               "shapes":  9,
+                               "tables":  2,
+                               "charts":  0
+                           },
+                           {
+                               "slide":  7,
+                               "shapes":  6,
+                               "tables":  1,
+                               "charts":  0
+                           },
+                           {
+                               "slide":  8,
+                               "shapes":  9,
+                               "tables":  0,
+                               "charts":  0
+                           }
+                       ]
+}

@@ -1,0 +1,76 @@
+{
+  "review_date": "2026-11-13",
+  "renderer": "Microsoft PowerPoint COM",
+  "slide_count": 8,
+  "all_slides_visually_reviewed": true,
+  "visual_findings": "No clipped text, overlap, missing data, or draft markers in the eight final previews.",
+  "native_objects": {
+    "charts": 1,
+    "tables": 5,
+    "architecture_diagrams": 2
+  },
+  "native_edit_save_reopen": "passed",
+  "ooxml_validation": "All validations PASSED!",
+  "body_font": "Arial, 18 pt or larger",
+  "scope": "docs/presentation/**; isolated dependencies and scratch scripts in ignored out/presentation-tools/**",
+  "source_metrics": "MBPP counts, repair/oracle confusion matrices and stratifications, library outcomes/coverage/gains independently recomputed from raw JSON.",
+  "source_fingerprints": "Library application and benchmark SHA-256 match the exact Git source commit.",
+  "timing": "All slides: standalone overview about 5 min. Live defense: selected slides within the total 10 min, together with CLI.",
+  "limitations": [
+    "Repair metrics conditional on 11/32 classified scenarios; 21 not repaired.",
+    "Oracle matrix shown for 16 reviewed cases; 16 UNREVIEWED disclosed.",
+    "Unique oracle TP has reversed explanation, not a correct diagnosis.",
+    "Library empty-separator warning is unconfirmed; no real bug discovery claimed."
+  ],
+  "final_files": [
+    {
+      "path": "docs/presentation/pytestgen-defense.pptx",
+      "bytes": 293156,
+      "sha256": "9a1906ca60111f969bc951805c426351b5914c369339529192fe5dafdae79ef3"
+    },
+    {
+      "path": "docs/presentation/pytestgen-defense.pdf",
+      "bytes": 145522,
+      "sha256": "43eebed07adf796b7197dd946c8946aa1818f50d7b670f60d731b49ca5379637"
+    },
+    {
+      "path": "docs/presentation/speaker-notes.md",
+      "bytes": 22981,
+      "sha256": "da7c6cedce79ae687a23cc57b24d05c5970598bb0a7c6637f558637af80b7d61"
+    }
+  ],
+  "previews": [
+    {
+      "file": "docs/presentation/previews/slide-01.png",
+      "sha256": "94950f92b29f9139f1df56d6e005609d36d1e1c697b3e1fad0b30699c75e4e6e"
+    },
+    {
+      "file": "docs/presentation/previews/slide-02.png",
+      "sha256": "bdc2054265fc70740ef067abf3602caa1405e58fd09fb6d5fa67b9736e3efac2"
+    },
+    {
+      "file": "docs/presentation/previews/slide-03.png",
+      "sha256": "00f08bf844c94c575597b65fb3439e1739d68b73fe435ac66378d156b8dad1fd"
+    },
+    {
+      "file": "docs/presentation/previews/slide-04.png",
+      "sha256": "060fcc613d7750ef947c1b48dac0b04d4ca99e37e9002b506d3669d4304b5f2d"
+    },
+    {
+      "file": "docs/presentation/previews/slide-05.png",
+      "sha256": "e097c062d62cdd0e22356429f6dd68ec9c462eb0927a56686347f287236aee90"
+    },
+    {
+      "file": "docs/presentation/previews/slide-06.png",
+      "sha256": "74e83253315ca52cc86b0ad9d974dd505276eba5ae6c85651af7ce852f812929"
+    },
+    {
+      "file": "docs/presentation/previews/slide-07.png",
+      "sha256": "a43086e5b4846685cda619ce92bc8a7d876cda58f6fe57b502ef33d4bbf22092"
+    },
+    {
+      "file": "docs/presentation/previews/slide-08.png",
+      "sha256": "a93bfe04d9dd24f289d87cb2cee234cc957a2cd0f12b82669a8553be16f69ae5"
+    }
+  ]
+}

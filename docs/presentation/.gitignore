@@ -1,0 +1,8 @@
+# Internal drafts and exploratory files stay local.
+/qa/draft/
+/qa/evidence-draft.json
+/qa/build-draft.json
+/qa/powerpoint-draft.json
+/qa/*-draft.*
+/qa/audit-draft*
+/qa/native-edit-check.pptx

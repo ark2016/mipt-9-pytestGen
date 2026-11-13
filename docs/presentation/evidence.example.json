@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "title": "pytestgen",
+  "author": "Аркадий Лебедев",
+  "institution": "МФТИ",
+  "date": "2026-11-13",
+  "source_commit": null,
+  "repository_url": "https://github.com/ark2016/mipt-9-pytestGen",
+  "mbpp": {
+    "report_path": "docs/evaluation/results/mbpp-report.json",
+    "evidence_url": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/42826762843",
+    "model_note": "Qwen2.5-Coder 1.5B, Q4_K_M, CPU"
+  },
+  "heuristic": {
+    "report_path": "docs/evaluation/results/heuristic-report.json",
+    "evidence_url": null,
+    "completed": false,
+    "interpretation_notes": []
+  },
+  "library": {
+    "report_path": "docs/evaluation/results/library-report.json",
+    "evidence_url": null,
+    "completed": false
+  },
+  "ci": {
+    "completed": false,
+    "run_url": null,
+    "commit": null,
+    "python": "3.12",
+    "passed": null,
+    "skipped": null,
+    "deselected": null,
+    "coverage_percent": null,
+    "checks": []
+  }
+}

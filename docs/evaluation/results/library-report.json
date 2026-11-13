@@ -1,0 +1,3372 @@
+{
+  "library": "python-slugify",
+  "version": "8.0.4",
+  "release": "https://github.com/un33k/python-slugify/tree/v8.0.4",
+  "revision": "f85f9488520148d5f6899b5639199882b605e30a",
+  "pypi_release": "https://pypi.org/project/python-slugify/8.0.4/",
+  "application_sha256": "69a02517d937d51d450573fb05edbbc8d632bc214e4e0c2eeff9b93fcf7ab021",
+  "benchmark_sha256": "c60fbfd62e51d642b593ec446cb60378bcc21323b975c4a88e382caf915e6568",
+  "archive_url": "https://codeload.github.com/un33k/python-slugify/tar.gz/f85f9488520148d5f6899b5639199882b605e30a",
+  "archive_sha256": "976b48a3bea5356c64e973d1996ccaf9ae8a48bf109fb359384484f5f19b4fc9",
+  "target": "slugify/slugify.py",
+  "functions": [
+    "slugify",
+    "smart_truncate"
+  ],
+  "upstream_tests": [
+    "test.py"
+  ],
+  "mode": "both",
+  "baseline_only": false,
+  "strategy": "hybrid",
+  "python": "3.12.16",
+  "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+  "dependencies": {
+    "pytestgen": "0.1.0",
+    "pytest": "9.1.1",
+    "coverage": "7.16.2",
+    "pytest-timeout": "2.4.0",
+    "text-unidecode": "1.3",
+    "Unidecode": null,
+    "z3-solver": "5.3.1.0",
+    "httpx": "0.28.1",
+    "pydantic": "2.14.1"
+  },
+  "settings": {
+    "llm_model": "qwen2.5-coder-1.5b-instruct",
+    "llm_timeout_s": 60.0,
+    "llm_max_retries": 0,
+    "llm_temperature": 0.2,
+    "llm_max_tokens": 1024,
+    "llm_seed": 42,
+    "llm_json_mode": "json_schema",
+    "cache_enabled": true,
+    "cache_dir": ".pytestgen/cache",
+    "run_timeout_s": 60.0,
+    "test_timeout_s": 3.0,
+    "record_timeout_s": 10.0,
+    "repair_attempts": 1,
+    "gap_iterations": 1,
+    "max_cases_per_function": 8,
+    "max_minimize_runs": 12,
+    "z3_timeout_ms": 2000,
+    "log_level": "WARNING",
+    "log_format": "json"
+  },
+  "llm_cache": false,
+  "decoding_note": "The application sets decoding on each ChatRequest (default seed 42); Settings llm_temperature/llm_max_tokens/llm_seed are not applied by build_generate. Application fingerprint identifies these parameters and prompts. Model identifier/seed alone do not guarantee deterministic model output.",
+  "usage_note": "Per-mode usage comes from the application report; null means unavailable after a generation error, never zero. Requests include failed calls, tokens count responses.",
+  "upstream_test_source_in_prompts": false,
+  "modes": [
+    {
+      "mode": "existing",
+      "status": "ok",
+      "detail": "",
+      "wall_s": 157.21277698800003,
+      "generation": {
+        "module": "slugify.slugify",
+        "strategy": "hybrid",
+        "output_path": "/home/runner/work/mipt-9-pytestGen/mipt-9-pytestGen/out/library-benchmark/existing/test_slugify_pytestgen.py",
+        "delta": {
+          "before": {
+            "covered_lines": 85,
+            "total_lines": 92,
+            "covered_branches": 46,
+            "total_branches": 50,
+            "line_percent": 92.3913043478261,
+            "branch_percent": 92.0
+          },
+          "after": {
+            "covered_lines": 86,
+            "total_lines": 92,
+            "covered_branches": 47,
+            "total_branches": 50,
+            "line_percent": 93.47826086956522,
+            "branch_percent": 94.0
+          },
+          "per_function": [
+            {
+              "function": "smart_truncate",
+              "before": {
+                "covered_lines": 21,
+                "total_lines": 22,
+                "covered_branches": 14,
+                "total_branches": 16,
+                "line_percent": 95.45454545454545,
+                "branch_percent": 87.5
+              },
+              "after": {
+                "covered_lines": 22,
+                "total_lines": 22,
+                "covered_branches": 15,
+                "total_branches": 16,
+                "line_percent": 100.0,
+                "branch_percent": 93.75
+              }
+            },
+            {
+              "function": "slugify",
+              "before": {
+                "covered_lines": 45,
+                "total_lines": 51,
+                "covered_branches": 32,
+                "total_branches": 34,
+                "line_percent": 88.23529411764706,
+                "branch_percent": 94.11764705882354
+              },
+              "after": {
+                "covered_lines": 45,
+                "total_lines": 51,
+                "covered_branches": 32,
+                "total_branches": 34,
+                "line_percent": 88.23529411764706,
+                "branch_percent": 94.11764705882354
+              }
+            }
+          ],
+          "line_gain": 1.0869565217391255,
+          "branch_gain": 2.0
+        },
+        "kept_tests": 13,
+        "dropped": [],
+        "suspected_bugs": [
+          {
+            "function": "smart_truncate",
+            "inputs": {
+              "string": " ",
+              "max_length": 1,
+              "word_boundary": true,
+              "separator": ""
+            },
+            "observed": "raises ValueError: empty separator",
+            "explanation": "The function raises ValueError when the separator is empty."
+          }
+        ],
+        "by_origin": [
+          {
+            "origin": "z3",
+            "tests": 5,
+            "arcs_added": 1
+          },
+          {
+            "origin": "llm_slot",
+            "tests": 8,
+            "arcs_added": 0
+          }
+        ],
+        "llm_usage": {
+          "requests": 5,
+          "cache_hits": 0,
+          "prompt_tokens": 6415,
+          "completion_tokens": 1291
+        },
+        "duration_s": 154.32106673200002,
+        "model": "qwen2.5-coder-1.5b-instruct",
+        "passed_first_run": 13,
+        "passed_after_repair": 0
+      },
+      "generated": {
+        "verified": true,
+        "counts": {
+          "passed": 13,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0,
+          "xfailed": 0,
+          "timeout": 0
+        },
+        "collected": 13,
+        "duration_s": 1.343525249000038,
+        "timed_out": false,
+        "collection_error": null,
+        "coverage": {
+          "scope": "slugify/slugify.py",
+          "covered_lines": 72,
+          "total_lines": 92,
+          "line_percent": 78.26086956521739,
+          "covered_branches": 30,
+          "total_branches": 50,
+          "branch_percent": 60.0,
+          "executed_lines": [
+            1,
+            3,
+            4,
+            5,
+            6,
+            8,
+            9,
+            10,
+            11,
+            13,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            27,
+            44,
+            46,
+            47,
+            49,
+            50,
+            52,
+            53,
+            55,
+            56,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            68,
+            72,
+            75,
+            109,
+            114,
+            118,
+            121,
+            122,
+            124,
+            125,
+            128,
+            132,
+            133,
+            136,
+            137,
+            138,
+            143,
+            144,
+            145,
+            150,
+            151,
+            153,
+            156,
+            157,
+            160,
+            163,
+            166,
+            167,
+            169,
+            171,
+            174,
+            177,
+            186,
+            191,
+            194,
+            197
+          ],
+          "missing_lines": [
+            65,
+            66,
+            69,
+            110,
+            111,
+            115,
+            129,
+            139,
+            140,
+            146,
+            147,
+            178,
+            179,
+            180,
+            182,
+            183,
+            187,
+            188,
+            192,
+            195
+          ],
+          "executed_arcs": [
+            "46->47",
+            "46->49",
+            "49->50",
+            "49->52",
+            "52->53",
+            "52->55",
+            "55->56",
+            "55->58",
+            "60->61",
+            "62->63",
+            "62->64",
+            "64->68",
+            "68->59",
+            "109->114",
+            "114->118",
+            "121->122",
+            "121->124",
+            "128->132",
+            "132->133",
+            "136->137",
+            "143->144",
+            "150->151",
+            "150->153",
+            "156->157",
+            "166->167",
+            "166->169",
+            "177->186",
+            "186->191",
+            "191->194",
+            "194->197"
+          ],
+          "missing_arcs": [
+            "60->59",
+            "64->65",
+            "68->69",
+            "109->110",
+            "110->111",
+            "110->114",
+            "114->115",
+            "128->129",
+            "132->136",
+            "136->143",
+            "143->150",
+            "156->160",
+            "177->178",
+            "178->179",
+            "178->182",
+            "186->187",
+            "187->188",
+            "187->191",
+            "191->192",
+            "194->195"
+          ]
+        },
+        "outcomes": [
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-1]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-2]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-3]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-4]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-5]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-6]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-7]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-8]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-9]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-10]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-11]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-1]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-2]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          }
+        ],
+        "output_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0 -- /home/runner/work/_temp/setup-uv-cache/builds-v0/.tmp45cInp/bin/python\nrootdir: /tmp/pytestgen_29sgpguh/project\nplugins: cov-7.1.0, respx-0.23.1, anyio-4.15.1, platformdirs-4.13.5, timeout-2.4.0\ntimeout: 3.0s\ntimeout method: signal\ntimeout func_only: False\ncollecting ... collected 13 items\n\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-1] PASSED [  7%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-2] PASSED [ 15%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-3] PASSED [ 23%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-4] PASSED [ 30%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-5] PASSED [ 38%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-6] PASSED [ 46%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-7] PASSED [ 53%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-8] PASSED [ 61%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-9] PASSED [ 69%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-10] PASSED [ 76%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-11] PASSED [ 84%]\npytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-1] PASSED [ 92%]\npytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-2] PASSED [100%]\n\n-------- generated xml file: /tmp/pytestgen_29sgpguh/scratch/junit.xml ---------\n============================== 13 passed in 0.11s ==============================\n"
+      },
+      "combined": {
+        "verified": true,
+        "counts": {
+          "passed": 95,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0,
+          "xfailed": 0,
+          "timeout": 0
+        },
+        "collected": 95,
+        "duration_s": 1.472937293999962,
+        "timed_out": false,
+        "collection_error": null,
+        "coverage": {
+          "scope": "slugify/slugify.py",
+          "covered_lines": 86,
+          "total_lines": 92,
+          "line_percent": 93.47826086956522,
+          "covered_branches": 47,
+          "total_branches": 50,
+          "branch_percent": 94.0,
+          "executed_lines": [
+            1,
+            3,
+            4,
+            5,
+            6,
+            8,
+            9,
+            10,
+            11,
+            13,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            27,
+            44,
+            46,
+            47,
+            49,
+            50,
+            52,
+            53,
+            55,
+            56,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            68,
+            69,
+            72,
+            75,
+            109,
+            110,
+            111,
+            114,
+            118,
+            121,
+            122,
+            124,
+            125,
+            128,
+            132,
+            133,
+            136,
+            137,
+            138,
+            143,
+            144,
+            145,
+            150,
+            151,
+            153,
+            156,
+            157,
+            160,
+            163,
+            166,
+            167,
+            169,
+            171,
+            174,
+            177,
+            178,
+            179,
+            180,
+            182,
+            183,
+            186,
+            187,
+            188,
+            191,
+            192,
+            194,
+            195,
+            197
+          ],
+          "missing_lines": [
+            115,
+            129,
+            139,
+            140,
+            146,
+            147
+          ],
+          "executed_arcs": [
+            "46->47",
+            "46->49",
+            "49->50",
+            "49->52",
+            "52->53",
+            "52->55",
+            "55->56",
+            "55->58",
+            "60->61",
+            "62->63",
+            "62->64",
+            "64->65",
+            "64->68",
+            "68->59",
+            "68->69",
+            "109->110",
+            "109->114",
+            "110->111",
+            "110->114",
+            "114->118",
+            "121->122",
+            "121->124",
+            "128->132",
+            "132->133",
+            "132->136",
+            "136->137",
+            "136->143",
+            "143->144",
+            "143->150",
+            "150->151",
+            "150->153",
+            "156->157",
+            "156->160",
+            "166->167",
+            "166->169",
+            "177->178",
+            "177->186",
+            "178->179",
+            "178->182",
+            "186->187",
+            "186->191",
+            "187->188",
+            "187->191",
+            "191->192",
+            "191->194",
+            "194->195",
+            "194->197"
+          ],
+          "missing_arcs": [
+            "60->59",
+            "114->115",
+            "128->129"
+          ]
+        },
+        "outcomes": [
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-1]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-2]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-3]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-4]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-5]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-6]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-7]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-8]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-9]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-10]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-11]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-1]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-2]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_accented_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_accented_text_with_non_word_characters",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_contains_numbers",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_custom_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_cyrillic_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_differently_cased_stopword_match",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_ends_with_number",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_extraneous_seperators",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_decimal_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_decimal_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_entities_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_entities_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_hexadecimal_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_hexadecimal_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_max_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_max_length_cutoff_not_required",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_multi_character_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_multiple_stopword_occurances",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_multiple_stopwords",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_non_word_characters",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_numbers_and_symbols",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_numbers_only",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_phonetic_conversion_of_eastern_scripts",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_pre_translation",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_regex_pattern_keep_underscore",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_regex_pattern_keep_underscore_with_underscore_as_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_replacements",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_replacements_german_umlaut_custom",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_save_order",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_starts_with_number",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_stopword_removal",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_stopword_removal_casesensitive",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_stopwords_with_different_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_word_boundary",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_accented_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_accented_text_with_non_word_characters",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_contains_numbers",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_custom_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_cyrillic_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_differently_cased_stopword_match",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_emojis",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_ends_with_number",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_extraneous_seperators",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_decimal_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_decimal_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_entities_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_entities_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_hexadecimal_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_hexadecimal_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_max_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_max_length_cutoff_not_required",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_multi_character_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_multiple_stopword_occurances",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_multiple_stopwords",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_non_word_characters",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_numbers_and_symbols",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_numbers_only",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_phonetic_conversion_of_eastern_scripts",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore_with_underscore_as_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_replacements",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_replacements_german_umlaut_custom",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_save_order",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_save_order_rtl",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_starts_with_number",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_stopword_removal",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_stopword_removal_casesensitive",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_stopwords_with_different_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_word_boundary",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestUtils::test_smart_truncate_no_max_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestUtils::test_smart_truncate_no_seperator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_affirmative_flags",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_defaults",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_multivalued_options_with_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_negative_flags",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_replacements_right",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_replacements_wrong",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.003
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_text_in_cli",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_text_in_cli_multi",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_text_in_stdin",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_two_text_sources_fails",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_valued_arguments",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          }
+        ],
+        "output_tail": "   [ 24%]\ntest.py::TestSlugify::test_html_entities_off PASSED                      [ 25%]\ntest.py::TestSlugify::test_html_entities_on PASSED                       [ 26%]\ntest.py::TestSlugify::test_html_hexadecimal_off PASSED                   [ 27%]\ntest.py::TestSlugify::test_html_hexadecimal_on PASSED                    [ 28%]\ntest.py::TestSlugify::test_max_length PASSED                             [ 29%]\ntest.py::TestSlugify::test_max_length_cutoff_not_required PASSED         [ 30%]\ntest.py::TestSlugify::test_multi_character_separator PASSED              [ 31%]\ntest.py::TestSlugify::test_multiple_stopword_occurances PASSED           [ 32%]\ntest.py::TestSlugify::test_multiple_stopwords PASSED                     [ 33%]\ntest.py::TestSlugify::test_non_word_characters PASSED                    [ 34%]\ntest.py::TestSlugify::test_numbers_and_symbols PASSED                    [ 35%]\ntest.py::TestSlugify::test_numbers_only PASSED                           [ 36%]\ntest.py::TestSlugify::test_phonetic_conversion_of_eastern_scripts PASSED [ 37%]\ntest.py::TestSlugify::test_pre_translation PASSED                        [ 38%]\ntest.py::TestSlugify::test_regex_pattern_keep_underscore PASSED          [ 40%]\ntest.py::TestSlugify::test_regex_pattern_keep_underscore_with_underscore_as_separator PASSED [ 41%]\ntest.py::TestSlugify::test_replacements PASSED                           [ 42%]\ntest.py::TestSlugify::test_replacements_german_umlaut_custom PASSED      [ 43%]\ntest.py::TestSlugify::test_save_order PASSED                             [ 44%]\ntest.py::TestSlugify::test_starts_with_number PASSED                     [ 45%]\ntest.py::TestSlugify::test_stopword_removal PASSED                       [ 46%]\ntest.py::TestSlugify::test_stopword_removal_casesensitive PASSED         [ 47%]\ntest.py::TestSlugify::test_stopwords_with_different_separator PASSED     [ 48%]\ntest.py::TestSlugify::test_word_boundary PASSED                          [ 49%]\ntest.py::TestSlugifyUnicode::test_accented_text PASSED                   [ 50%]\ntest.py::TestSlugifyUnicode::test_accented_text_with_non_word_characters PASSED [ 51%]\ntest.py::TestSlugifyUnicode::test_contains_numbers PASSED                [ 52%]\ntest.py::TestSlugifyUnicode::test_custom_separator PASSED                [ 53%]\ntest.py::TestSlugifyUnicode::test_cyrillic_text PASSED                   [ 54%]\ntest.py::TestSlugifyUnicode::test_differently_cased_stopword_match PASSED [ 55%]\ntest.py::TestSlugifyUnicode::test_emojis PASSED                          [ 56%]\ntest.py::TestSlugifyUnicode::test_ends_with_number PASSED                [ 57%]\ntest.py::TestSlugifyUnicode::test_extraneous_seperators PASSED           [ 58%]\ntest.py::TestSlugifyUnicode::test_html_decimal_off PASSED                [ 60%]\ntest.py::TestSlugifyUnicode::test_html_decimal_on PASSED                 [ 61%]\ntest.py::TestSlugifyUnicode::test_html_entities_off PASSED               [ 62%]\ntest.py::TestSlugifyUnicode::test_html_entities_on PASSED                [ 63%]\ntest.py::TestSlugifyUnicode::test_html_hexadecimal_off PASSED            [ 64%]\ntest.py::TestSlugifyUnicode::test_html_hexadecimal_on PASSED             [ 65%]\ntest.py::TestSlugifyUnicode::test_max_length PASSED                      [ 66%]\ntest.py::TestSlugifyUnicode::test_max_length_cutoff_not_required PASSED  [ 67%]\ntest.py::TestSlugifyUnicode::test_multi_character_separator PASSED       [ 68%]\ntest.py::TestSlugifyUnicode::test_multiple_stopword_occurances PASSED    [ 69%]\ntest.py::TestSlugifyUnicode::test_multiple_stopwords PASSED              [ 70%]\ntest.py::TestSlugifyUnicode::test_non_word_characters PASSED             [ 71%]\ntest.py::TestSlugifyUnicode::test_numbers_and_symbols PASSED             [ 72%]\ntest.py::TestSlugifyUnicode::test_numbers_only PASSED                    [ 73%]\ntest.py::TestSlugifyUnicode::test_phonetic_conversion_of_eastern_scripts PASSED [ 74%]\ntest.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore PASSED   [ 75%]\ntest.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore_with_underscore_as_separator PASSED [ 76%]\ntest.py::TestSlugifyUnicode::test_replacements PASSED                    [ 77%]\ntest.py::TestSlugifyUnicode::test_replacements_german_umlaut_custom PASSED [ 78%]\ntest.py::TestSlugifyUnicode::test_save_order PASSED                      [ 80%]\ntest.py::TestSlugifyUnicode::test_save_order_rtl PASSED                  [ 81%]\ntest.py::TestSlugifyUnicode::test_starts_with_number PASSED              [ 82%]\ntest.py::TestSlugifyUnicode::test_stopword_removal PASSED                [ 83%]\ntest.py::TestSlugifyUnicode::test_stopword_removal_casesensitive PASSED  [ 84%]\ntest.py::TestSlugifyUnicode::test_stopwords_with_different_separator PASSED [ 85%]\ntest.py::TestSlugifyUnicode::test_word_boundary PASSED                   [ 86%]\ntest.py::TestUtils::test_smart_truncate_no_max_length PASSED             [ 87%]\ntest.py::TestUtils::test_smart_truncate_no_seperator PASSED              [ 88%]\ntest.py::TestCommandParams::test_affirmative_flags PASSED                [ 89%]\ntest.py::TestCommandParams::test_defaults PASSED                         [ 90%]\ntest.py::TestCommandParams::test_multivalued_options_with_text PASSED    [ 91%]\ntest.py::TestCommandParams::test_negative_flags PASSED                   [ 92%]\ntest.py::TestCommandParams::test_replacements_right PASSED               [ 93%]\ntest.py::TestCommandParams::test_replacements_wrong PASSED               [ 94%]\ntest.py::TestCommandParams::test_text_in_cli PASSED                      [ 95%]\ntest.py::TestCommandParams::test_text_in_cli_multi PASSED                [ 96%]\ntest.py::TestCommandParams::test_text_in_stdin PASSED                    [ 97%]\ntest.py::TestCommandParams::test_two_text_sources_fails PASSED           [ 98%]\ntest.py::TestCommandParams::test_valued_arguments PASSED                 [100%]\n\n-------- generated xml file: /tmp/pytestgen_2evceta2/scratch/junit.xml ---------\n============================== 95 passed in 0.23s ==============================\n"
+      },
+      "gain_over_upstream": {
+        "line_percentage_points": 1.0869565217391353,
+        "branch_percentage_points": 1.9999999999999907,
+        "new_lines": [
+          56
+        ],
+        "new_arcs": [
+          "55->56"
+        ],
+        "lost_lines": [],
+        "lost_arcs": []
+      },
+      "llm_usage": {
+        "requests": 5,
+        "cache_hits": 0,
+        "prompt_tokens": 6415,
+        "completion_tokens": 1291
+      }
+    },
+    {
+      "mode": "cold",
+      "status": "ok",
+      "detail": "",
+      "wall_s": 130.39830750699997,
+      "generation": {
+        "module": "slugify.slugify",
+        "strategy": "hybrid",
+        "output_path": "/home/runner/work/mipt-9-pytestGen/mipt-9-pytestGen/out/library-benchmark/cold/test_slugify_pytestgen.py",
+        "delta": {
+          "before": {
+            "covered_lines": 0,
+            "total_lines": 92,
+            "covered_branches": 0,
+            "total_branches": 50,
+            "line_percent": 0.0,
+            "branch_percent": 0.0
+          },
+          "after": {
+            "covered_lines": 72,
+            "total_lines": 92,
+            "covered_branches": 34,
+            "total_branches": 50,
+            "line_percent": 78.26086956521739,
+            "branch_percent": 68.0
+          },
+          "per_function": [
+            {
+              "function": "smart_truncate",
+              "before": {
+                "covered_lines": 0,
+                "total_lines": 22,
+                "covered_branches": 0,
+                "total_branches": 16,
+                "line_percent": 0.0,
+                "branch_percent": 0.0
+              },
+              "after": {
+                "covered_lines": 19,
+                "total_lines": 22,
+                "covered_branches": 13,
+                "total_branches": 16,
+                "line_percent": 86.36363636363636,
+                "branch_percent": 81.25
+              }
+            },
+            {
+              "function": "slugify",
+              "before": {
+                "covered_lines": 0,
+                "total_lines": 51,
+                "covered_branches": 0,
+                "total_branches": 34,
+                "line_percent": 0.0,
+                "branch_percent": 0.0
+              },
+              "after": {
+                "covered_lines": 34,
+                "total_lines": 51,
+                "covered_branches": 21,
+                "total_branches": 34,
+                "line_percent": 66.66666666666667,
+                "branch_percent": 61.76470588235294
+              }
+            }
+          ],
+          "line_gain": 78.26086956521739,
+          "branch_gain": 68.0
+        },
+        "kept_tests": 18,
+        "dropped": [
+          {
+            "name": "test_smart_truncate_word_boundary_false",
+            "function": "smart_truncate",
+            "reason": "still_failing",
+            "detail": "AssertionError: assert 'Hello, world!' == 'Hello world!'"
+          }
+        ],
+        "suspected_bugs": [
+          {
+            "function": "smart_truncate",
+            "inputs": {
+              "string": " ",
+              "max_length": 1,
+              "word_boundary": true,
+              "separator": ""
+            },
+            "observed": "raises ValueError: empty separator",
+            "explanation": "The function raises ValueError when the separator is empty."
+          }
+        ],
+        "by_origin": [
+          {
+            "origin": "z3",
+            "tests": 5,
+            "arcs_added": 25
+          },
+          {
+            "origin": "llm_slot",
+            "tests": 9,
+            "arcs_added": 9
+          },
+          {
+            "origin": "llm_free",
+            "tests": 4,
+            "arcs_added": 0
+          }
+        ],
+        "llm_usage": {
+          "requests": 8,
+          "cache_hits": 0,
+          "prompt_tokens": 8839,
+          "completion_tokens": 2164
+        },
+        "duration_s": 127.55071231900001,
+        "model": "qwen2.5-coder-1.5b-instruct",
+        "passed_first_run": 18,
+        "passed_after_repair": 0
+      },
+      "generated": {
+        "verified": true,
+        "counts": {
+          "passed": 18,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0,
+          "xfailed": 0,
+          "timeout": 0
+        },
+        "collected": 18,
+        "duration_s": 1.349263747000009,
+        "timed_out": false,
+        "collection_error": null,
+        "coverage": {
+          "scope": "slugify/slugify.py",
+          "covered_lines": 72,
+          "total_lines": 92,
+          "line_percent": 78.26086956521739,
+          "covered_branches": 34,
+          "total_branches": 50,
+          "branch_percent": 68.0,
+          "executed_lines": [
+            1,
+            3,
+            4,
+            5,
+            6,
+            8,
+            9,
+            10,
+            11,
+            13,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            27,
+            44,
+            46,
+            47,
+            49,
+            50,
+            52,
+            53,
+            55,
+            56,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            68,
+            72,
+            75,
+            109,
+            114,
+            118,
+            121,
+            122,
+            124,
+            125,
+            128,
+            132,
+            133,
+            136,
+            137,
+            138,
+            143,
+            144,
+            145,
+            150,
+            151,
+            153,
+            156,
+            157,
+            160,
+            163,
+            166,
+            167,
+            169,
+            171,
+            174,
+            177,
+            186,
+            191,
+            194,
+            197
+          ],
+          "missing_lines": [
+            65,
+            66,
+            69,
+            110,
+            111,
+            115,
+            129,
+            139,
+            140,
+            146,
+            147,
+            178,
+            179,
+            180,
+            182,
+            183,
+            187,
+            188,
+            192,
+            195
+          ],
+          "executed_arcs": [
+            "46->47",
+            "46->49",
+            "49->50",
+            "49->52",
+            "52->53",
+            "52->55",
+            "55->56",
+            "55->58",
+            "60->61",
+            "62->63",
+            "62->64",
+            "64->68",
+            "68->59",
+            "109->114",
+            "114->118",
+            "121->122",
+            "121->124",
+            "128->132",
+            "132->133",
+            "132->136",
+            "136->137",
+            "136->143",
+            "143->144",
+            "143->150",
+            "150->151",
+            "150->153",
+            "156->157",
+            "156->160",
+            "166->167",
+            "166->169",
+            "177->186",
+            "186->191",
+            "191->194",
+            "194->197"
+          ],
+          "missing_arcs": [
+            "60->59",
+            "64->65",
+            "68->69",
+            "109->110",
+            "110->111",
+            "110->114",
+            "114->115",
+            "128->129",
+            "177->178",
+            "178->179",
+            "178->182",
+            "186->187",
+            "187->188",
+            "187->191",
+            "191->192",
+            "194->195"
+          ]
+        },
+        "outcomes": [
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-1]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-2]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-3]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-4]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-5]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-6]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-7]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-8]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-9]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-10]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-11]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-1]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-2]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-3]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_empty_string",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.0
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_max_length_equal_to_string_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.0
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_max_length_less_than_string_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.0
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_word_boundary_true",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.0
+          }
+        ],
+        "output_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0 -- /home/runner/work/_temp/setup-uv-cache/builds-v0/.tmp45cInp/bin/python\nrootdir: /tmp/pytestgen_4r3jyptn/project\nplugins: cov-7.1.0, respx-0.23.1, anyio-4.15.1, platformdirs-4.13.5, timeout-2.4.0\ntimeout: 3.0s\ntimeout method: signal\ntimeout func_only: False\ncollecting ... collected 18 items\n\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-1] PASSED [  5%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-2] PASSED [ 11%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-3] PASSED [ 16%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-4] PASSED [ 22%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-5] PASSED [ 27%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-6] PASSED [ 33%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-7] PASSED [ 38%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-8] PASSED [ 44%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-9] PASSED [ 50%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-10] PASSED [ 55%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-11] PASSED [ 61%]\npytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-1] PASSED [ 66%]\npytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-2] PASSED [ 72%]\npytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-3] PASSED [ 77%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_empty_string PASSED [ 83%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_max_length_equal_to_string_length PASSED [ 88%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_max_length_less_than_string_length PASSED [ 94%]\npytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_word_boundary_true PASSED [100%]\n\n-------- generated xml file: /tmp/pytestgen_4r3jyptn/scratch/junit.xml ---------\n============================== 18 passed in 0.12s ==============================\n"
+      },
+      "combined": {
+        "verified": true,
+        "counts": {
+          "passed": 100,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0,
+          "xfailed": 0,
+          "timeout": 0
+        },
+        "collected": 100,
+        "duration_s": 1.4873082400000044,
+        "timed_out": false,
+        "collection_error": null,
+        "coverage": {
+          "scope": "slugify/slugify.py",
+          "covered_lines": 86,
+          "total_lines": 92,
+          "line_percent": 93.47826086956522,
+          "covered_branches": 47,
+          "total_branches": 50,
+          "branch_percent": 94.0,
+          "executed_lines": [
+            1,
+            3,
+            4,
+            5,
+            6,
+            8,
+            9,
+            10,
+            11,
+            13,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            27,
+            44,
+            46,
+            47,
+            49,
+            50,
+            52,
+            53,
+            55,
+            56,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            68,
+            69,
+            72,
+            75,
+            109,
+            110,
+            111,
+            114,
+            118,
+            121,
+            122,
+            124,
+            125,
+            128,
+            132,
+            133,
+            136,
+            137,
+            138,
+            143,
+            144,
+            145,
+            150,
+            151,
+            153,
+            156,
+            157,
+            160,
+            163,
+            166,
+            167,
+            169,
+            171,
+            174,
+            177,
+            178,
+            179,
+            180,
+            182,
+            183,
+            186,
+            187,
+            188,
+            191,
+            192,
+            194,
+            195,
+            197
+          ],
+          "missing_lines": [
+            115,
+            129,
+            139,
+            140,
+            146,
+            147
+          ],
+          "executed_arcs": [
+            "46->47",
+            "46->49",
+            "49->50",
+            "49->52",
+            "52->53",
+            "52->55",
+            "55->56",
+            "55->58",
+            "60->61",
+            "62->63",
+            "62->64",
+            "64->65",
+            "64->68",
+            "68->59",
+            "68->69",
+            "109->110",
+            "109->114",
+            "110->111",
+            "110->114",
+            "114->118",
+            "121->122",
+            "121->124",
+            "128->132",
+            "132->133",
+            "132->136",
+            "136->137",
+            "136->143",
+            "143->144",
+            "143->150",
+            "150->151",
+            "150->153",
+            "156->157",
+            "156->160",
+            "166->167",
+            "166->169",
+            "177->178",
+            "177->186",
+            "178->179",
+            "178->182",
+            "186->187",
+            "186->191",
+            "187->188",
+            "187->191",
+            "191->192",
+            "191->194",
+            "194->195",
+            "194->197"
+          ],
+          "missing_arcs": [
+            "60->59",
+            "114->115",
+            "128->129"
+          ]
+        },
+        "outcomes": [
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-1]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-2]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-3]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-4]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[z3-5]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-6]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-7]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-8]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-9]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-10]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_returns[llm_slot-11]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-1]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-2]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_slugify_returns[llm_slot-3]",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_empty_string",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.0
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_max_length_equal_to_string_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.0
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_max_length_less_than_string_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.0
+          },
+          {
+            "nodeid": "pytestgen_tests/test_slugify_pytestgen.py::test_smart_truncate_word_boundary_true",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.0
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_accented_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_accented_text_with_non_word_characters",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_contains_numbers",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_custom_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_cyrillic_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_differently_cased_stopword_match",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_ends_with_number",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_extraneous_seperators",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_decimal_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_decimal_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_entities_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_entities_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_hexadecimal_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_html_hexadecimal_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_max_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_max_length_cutoff_not_required",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_multi_character_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_multiple_stopword_occurances",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_multiple_stopwords",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_non_word_characters",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_numbers_and_symbols",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_numbers_only",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_phonetic_conversion_of_eastern_scripts",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_pre_translation",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_regex_pattern_keep_underscore",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_regex_pattern_keep_underscore_with_underscore_as_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_replacements",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_replacements_german_umlaut_custom",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_save_order",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_starts_with_number",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_stopword_removal",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_stopword_removal_casesensitive",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_stopwords_with_different_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugify::test_word_boundary",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_accented_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_accented_text_with_non_word_characters",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_contains_numbers",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_custom_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_cyrillic_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_differently_cased_stopword_match",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_emojis",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_ends_with_number",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_extraneous_seperators",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_decimal_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_decimal_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_entities_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_entities_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_hexadecimal_off",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_html_hexadecimal_on",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_max_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_max_length_cutoff_not_required",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_multi_character_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_multiple_stopword_occurances",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_multiple_stopwords",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_non_word_characters",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_numbers_and_symbols",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_numbers_only",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_phonetic_conversion_of_eastern_scripts",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore_with_underscore_as_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_replacements",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_replacements_german_umlaut_custom",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_save_order",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_save_order_rtl",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_starts_with_number",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_stopword_removal",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_stopword_removal_casesensitive",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_stopwords_with_different_separator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestSlugifyUnicode::test_word_boundary",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestUtils::test_smart_truncate_no_max_length",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestUtils::test_smart_truncate_no_seperator",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_affirmative_flags",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_defaults",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_multivalued_options_with_text",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.002
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_negative_flags",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_replacements_right",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_replacements_wrong",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.003
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_text_in_cli",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_text_in_cli_multi",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_text_in_stdin",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_two_text_sources_fails",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          },
+          {
+            "nodeid": "test.py::TestCommandParams::test_valued_arguments",
+            "status": "passed",
+            "message": "",
+            "traceback": "",
+            "duration_s": 0.001
+          }
+        ],
+        "output_tail": "   [ 28%]\ntest.py::TestSlugify::test_html_entities_off PASSED                      [ 29%]\ntest.py::TestSlugify::test_html_entities_on PASSED                       [ 30%]\ntest.py::TestSlugify::test_html_hexadecimal_off PASSED                   [ 31%]\ntest.py::TestSlugify::test_html_hexadecimal_on PASSED                    [ 32%]\ntest.py::TestSlugify::test_max_length PASSED                             [ 33%]\ntest.py::TestSlugify::test_max_length_cutoff_not_required PASSED         [ 34%]\ntest.py::TestSlugify::test_multi_character_separator PASSED              [ 35%]\ntest.py::TestSlugify::test_multiple_stopword_occurances PASSED           [ 36%]\ntest.py::TestSlugify::test_multiple_stopwords PASSED                     [ 37%]\ntest.py::TestSlugify::test_non_word_characters PASSED                    [ 38%]\ntest.py::TestSlugify::test_numbers_and_symbols PASSED                    [ 39%]\ntest.py::TestSlugify::test_numbers_only PASSED                           [ 40%]\ntest.py::TestSlugify::test_phonetic_conversion_of_eastern_scripts PASSED [ 41%]\ntest.py::TestSlugify::test_pre_translation PASSED                        [ 42%]\ntest.py::TestSlugify::test_regex_pattern_keep_underscore PASSED          [ 43%]\ntest.py::TestSlugify::test_regex_pattern_keep_underscore_with_underscore_as_separator PASSED [ 44%]\ntest.py::TestSlugify::test_replacements PASSED                           [ 45%]\ntest.py::TestSlugify::test_replacements_german_umlaut_custom PASSED      [ 46%]\ntest.py::TestSlugify::test_save_order PASSED                             [ 47%]\ntest.py::TestSlugify::test_starts_with_number PASSED                     [ 48%]\ntest.py::TestSlugify::test_stopword_removal PASSED                       [ 49%]\ntest.py::TestSlugify::test_stopword_removal_casesensitive PASSED         [ 50%]\ntest.py::TestSlugify::test_stopwords_with_different_separator PASSED     [ 51%]\ntest.py::TestSlugify::test_word_boundary PASSED                          [ 52%]\ntest.py::TestSlugifyUnicode::test_accented_text PASSED                   [ 53%]\ntest.py::TestSlugifyUnicode::test_accented_text_with_non_word_characters PASSED [ 54%]\ntest.py::TestSlugifyUnicode::test_contains_numbers PASSED                [ 55%]\ntest.py::TestSlugifyUnicode::test_custom_separator PASSED                [ 56%]\ntest.py::TestSlugifyUnicode::test_cyrillic_text PASSED                   [ 57%]\ntest.py::TestSlugifyUnicode::test_differently_cased_stopword_match PASSED [ 58%]\ntest.py::TestSlugifyUnicode::test_emojis PASSED                          [ 59%]\ntest.py::TestSlugifyUnicode::test_ends_with_number PASSED                [ 60%]\ntest.py::TestSlugifyUnicode::test_extraneous_seperators PASSED           [ 61%]\ntest.py::TestSlugifyUnicode::test_html_decimal_off PASSED                [ 62%]\ntest.py::TestSlugifyUnicode::test_html_decimal_on PASSED                 [ 63%]\ntest.py::TestSlugifyUnicode::test_html_entities_off PASSED               [ 64%]\ntest.py::TestSlugifyUnicode::test_html_entities_on PASSED                [ 65%]\ntest.py::TestSlugifyUnicode::test_html_hexadecimal_off PASSED            [ 66%]\ntest.py::TestSlugifyUnicode::test_html_hexadecimal_on PASSED             [ 67%]\ntest.py::TestSlugifyUnicode::test_max_length PASSED                      [ 68%]\ntest.py::TestSlugifyUnicode::test_max_length_cutoff_not_required PASSED  [ 69%]\ntest.py::TestSlugifyUnicode::test_multi_character_separator PASSED       [ 70%]\ntest.py::TestSlugifyUnicode::test_multiple_stopword_occurances PASSED    [ 71%]\ntest.py::TestSlugifyUnicode::test_multiple_stopwords PASSED              [ 72%]\ntest.py::TestSlugifyUnicode::test_non_word_characters PASSED             [ 73%]\ntest.py::TestSlugifyUnicode::test_numbers_and_symbols PASSED             [ 74%]\ntest.py::TestSlugifyUnicode::test_numbers_only PASSED                    [ 75%]\ntest.py::TestSlugifyUnicode::test_phonetic_conversion_of_eastern_scripts PASSED [ 76%]\ntest.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore PASSED   [ 77%]\ntest.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore_with_underscore_as_separator PASSED [ 78%]\ntest.py::TestSlugifyUnicode::test_replacements PASSED                    [ 79%]\ntest.py::TestSlugifyUnicode::test_replacements_german_umlaut_custom PASSED [ 80%]\ntest.py::TestSlugifyUnicode::test_save_order PASSED                      [ 81%]\ntest.py::TestSlugifyUnicode::test_save_order_rtl PASSED                  [ 82%]\ntest.py::TestSlugifyUnicode::test_starts_with_number PASSED              [ 83%]\ntest.py::TestSlugifyUnicode::test_stopword_removal PASSED                [ 84%]\ntest.py::TestSlugifyUnicode::test_stopword_removal_casesensitive PASSED  [ 85%]\ntest.py::TestSlugifyUnicode::test_stopwords_with_different_separator PASSED [ 86%]\ntest.py::TestSlugifyUnicode::test_word_boundary PASSED                   [ 87%]\ntest.py::TestUtils::test_smart_truncate_no_max_length PASSED             [ 88%]\ntest.py::TestUtils::test_smart_truncate_no_seperator PASSED              [ 89%]\ntest.py::TestCommandParams::test_affirmative_flags PASSED                [ 90%]\ntest.py::TestCommandParams::test_defaults PASSED                         [ 91%]\ntest.py::TestCommandParams::test_multivalued_options_with_text PASSED    [ 92%]\ntest.py::TestCommandParams::test_negative_flags PASSED                   [ 93%]\ntest.py::TestCommandParams::test_replacements_right PASSED               [ 94%]\ntest.py::TestCommandParams::test_replacements_wrong PASSED               [ 95%]\ntest.py::TestCommandParams::test_text_in_cli PASSED                      [ 96%]\ntest.py::TestCommandParams::test_text_in_cli_multi PASSED                [ 97%]\ntest.py::TestCommandParams::test_text_in_stdin PASSED                    [ 98%]\ntest.py::TestCommandParams::test_two_text_sources_fails PASSED           [ 99%]\ntest.py::TestCommandParams::test_valued_arguments PASSED                 [100%]\n\n-------- generated xml file: /tmp/pytestgen_zwfpcb9l/scratch/junit.xml ---------\n============================= 100 passed in 0.24s ==============================\n"
+      },
+      "gain_over_upstream": {
+        "line_percentage_points": 1.0869565217391353,
+        "branch_percentage_points": 1.9999999999999907,
+        "new_lines": [
+          56
+        ],
+        "new_arcs": [
+          "55->56"
+        ],
+        "lost_lines": [],
+        "lost_arcs": []
+      },
+      "llm_usage": {
+        "requests": 8,
+        "cache_hits": 0,
+        "prompt_tokens": 8839,
+        "completion_tokens": 2164
+      }
+    }
+  ],
+  "status": "ok",
+  "source_root": "/home/runner/work/mipt-9-pytestGen/mipt-9-pytestGen/out/library-source/source",
+  "license": "/home/runner/work/mipt-9-pytestGen/mipt-9-pytestGen/out/library-source/source/LICENSE",
+  "baseline": {
+    "verified": true,
+    "counts": {
+      "passed": 82,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "timeout": 0
+    },
+    "collected": 82,
+    "duration_s": 1.4736585870000027,
+    "timed_out": false,
+    "collection_error": null,
+    "coverage": {
+      "scope": "slugify/slugify.py",
+      "covered_lines": 85,
+      "total_lines": 92,
+      "line_percent": 92.3913043478261,
+      "covered_branches": 46,
+      "total_branches": 50,
+      "branch_percent": 92.0,
+      "executed_lines": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        11,
+        13,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        27,
+        44,
+        46,
+        47,
+        49,
+        50,
+        52,
+        53,
+        55,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        68,
+        69,
+        72,
+        75,
+        109,
+        110,
+        111,
+        114,
+        118,
+        121,
+        122,
+        124,
+        125,
+        128,
+        132,
+        133,
+        136,
+        137,
+        138,
+        143,
+        144,
+        145,
+        150,
+        151,
+        153,
+        156,
+        157,
+        160,
+        163,
+        166,
+        167,
+        169,
+        171,
+        174,
+        177,
+        178,
+        179,
+        180,
+        182,
+        183,
+        186,
+        187,
+        188,
+        191,
+        192,
+        194,
+        195,
+        197
+      ],
+      "missing_lines": [
+        56,
+        115,
+        129,
+        139,
+        140,
+        146,
+        147
+      ],
+      "executed_arcs": [
+        "46->47",
+        "46->49",
+        "49->50",
+        "49->52",
+        "52->53",
+        "52->55",
+        "55->58",
+        "60->61",
+        "62->63",
+        "62->64",
+        "64->65",
+        "64->68",
+        "68->59",
+        "68->69",
+        "109->110",
+        "109->114",
+        "110->111",
+        "110->114",
+        "114->118",
+        "121->122",
+        "121->124",
+        "128->132",
+        "132->133",
+        "132->136",
+        "136->137",
+        "136->143",
+        "143->144",
+        "143->150",
+        "150->151",
+        "150->153",
+        "156->157",
+        "156->160",
+        "166->167",
+        "166->169",
+        "177->178",
+        "177->186",
+        "178->179",
+        "178->182",
+        "186->187",
+        "186->191",
+        "187->188",
+        "187->191",
+        "191->192",
+        "191->194",
+        "194->195",
+        "194->197"
+      ],
+      "missing_arcs": [
+        "55->56",
+        "60->59",
+        "114->115",
+        "128->129"
+      ]
+    },
+    "outcomes": [
+      {
+        "nodeid": "test.py::TestSlugify::test_accented_text",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_accented_text_with_non_word_characters",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_contains_numbers",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_custom_separator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_cyrillic_text",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_differently_cased_stopword_match",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_ends_with_number",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_extraneous_seperators",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_html_decimal_off",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_html_decimal_on",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_html_entities_off",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_html_entities_on",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_html_hexadecimal_off",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_html_hexadecimal_on",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_max_length",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_max_length_cutoff_not_required",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_multi_character_separator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_multiple_stopword_occurances",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_multiple_stopwords",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_non_word_characters",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_numbers_and_symbols",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_numbers_only",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_phonetic_conversion_of_eastern_scripts",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_pre_translation",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_regex_pattern_keep_underscore",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_regex_pattern_keep_underscore_with_underscore_as_separator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_replacements",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_replacements_german_umlaut_custom",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_save_order",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_starts_with_number",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_stopword_removal",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_stopword_removal_casesensitive",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_stopwords_with_different_separator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugify::test_word_boundary",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_accented_text",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_accented_text_with_non_word_characters",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_contains_numbers",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_custom_separator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_cyrillic_text",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_differently_cased_stopword_match",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_emojis",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_ends_with_number",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_extraneous_seperators",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_html_decimal_off",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_html_decimal_on",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_html_entities_off",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_html_entities_on",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_html_hexadecimal_off",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_html_hexadecimal_on",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_max_length",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_max_length_cutoff_not_required",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_multi_character_separator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_multiple_stopword_occurances",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_multiple_stopwords",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_non_word_characters",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_numbers_and_symbols",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_numbers_only",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_phonetic_conversion_of_eastern_scripts",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore_with_underscore_as_separator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_replacements",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_replacements_german_umlaut_custom",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_save_order",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_save_order_rtl",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_starts_with_number",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_stopword_removal",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_stopword_removal_casesensitive",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_stopwords_with_different_separator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestSlugifyUnicode::test_word_boundary",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestUtils::test_smart_truncate_no_max_length",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestUtils::test_smart_truncate_no_seperator",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_affirmative_flags",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_defaults",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_multivalued_options_with_text",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.002
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_negative_flags",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_replacements_right",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_replacements_wrong",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.003
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_text_in_cli",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_text_in_cli_multi",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_text_in_stdin",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_two_text_sources_fails",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      },
+      {
+        "nodeid": "test.py::TestCommandParams::test_valued_arguments",
+        "status": "passed",
+        "message": "",
+        "traceback": "",
+        "duration_s": 0.001
+      }
+    ],
+    "output_tail": "   [ 12%]\ntest.py::TestSlugify::test_html_entities_off PASSED                      [ 13%]\ntest.py::TestSlugify::test_html_entities_on PASSED                       [ 14%]\ntest.py::TestSlugify::test_html_hexadecimal_off PASSED                   [ 15%]\ntest.py::TestSlugify::test_html_hexadecimal_on PASSED                    [ 17%]\ntest.py::TestSlugify::test_max_length PASSED                             [ 18%]\ntest.py::TestSlugify::test_max_length_cutoff_not_required PASSED         [ 19%]\ntest.py::TestSlugify::test_multi_character_separator PASSED              [ 20%]\ntest.py::TestSlugify::test_multiple_stopword_occurances PASSED           [ 21%]\ntest.py::TestSlugify::test_multiple_stopwords PASSED                     [ 23%]\ntest.py::TestSlugify::test_non_word_characters PASSED                    [ 24%]\ntest.py::TestSlugify::test_numbers_and_symbols PASSED                    [ 25%]\ntest.py::TestSlugify::test_numbers_only PASSED                           [ 26%]\ntest.py::TestSlugify::test_phonetic_conversion_of_eastern_scripts PASSED [ 28%]\ntest.py::TestSlugify::test_pre_translation PASSED                        [ 29%]\ntest.py::TestSlugify::test_regex_pattern_keep_underscore PASSED          [ 30%]\ntest.py::TestSlugify::test_regex_pattern_keep_underscore_with_underscore_as_separator PASSED [ 31%]\ntest.py::TestSlugify::test_replacements PASSED                           [ 32%]\ntest.py::TestSlugify::test_replacements_german_umlaut_custom PASSED      [ 34%]\ntest.py::TestSlugify::test_save_order PASSED                             [ 35%]\ntest.py::TestSlugify::test_starts_with_number PASSED                     [ 36%]\ntest.py::TestSlugify::test_stopword_removal PASSED                       [ 37%]\ntest.py::TestSlugify::test_stopword_removal_casesensitive PASSED         [ 39%]\ntest.py::TestSlugify::test_stopwords_with_different_separator PASSED     [ 40%]\ntest.py::TestSlugify::test_word_boundary PASSED                          [ 41%]\ntest.py::TestSlugifyUnicode::test_accented_text PASSED                   [ 42%]\ntest.py::TestSlugifyUnicode::test_accented_text_with_non_word_characters PASSED [ 43%]\ntest.py::TestSlugifyUnicode::test_contains_numbers PASSED                [ 45%]\ntest.py::TestSlugifyUnicode::test_custom_separator PASSED                [ 46%]\ntest.py::TestSlugifyUnicode::test_cyrillic_text PASSED                   [ 47%]\ntest.py::TestSlugifyUnicode::test_differently_cased_stopword_match PASSED [ 48%]\ntest.py::TestSlugifyUnicode::test_emojis PASSED                          [ 50%]\ntest.py::TestSlugifyUnicode::test_ends_with_number PASSED                [ 51%]\ntest.py::TestSlugifyUnicode::test_extraneous_seperators PASSED           [ 52%]\ntest.py::TestSlugifyUnicode::test_html_decimal_off PASSED                [ 53%]\ntest.py::TestSlugifyUnicode::test_html_decimal_on PASSED                 [ 54%]\ntest.py::TestSlugifyUnicode::test_html_entities_off PASSED               [ 56%]\ntest.py::TestSlugifyUnicode::test_html_entities_on PASSED                [ 57%]\ntest.py::TestSlugifyUnicode::test_html_hexadecimal_off PASSED            [ 58%]\ntest.py::TestSlugifyUnicode::test_html_hexadecimal_on PASSED             [ 59%]\ntest.py::TestSlugifyUnicode::test_max_length PASSED                      [ 60%]\ntest.py::TestSlugifyUnicode::test_max_length_cutoff_not_required PASSED  [ 62%]\ntest.py::TestSlugifyUnicode::test_multi_character_separator PASSED       [ 63%]\ntest.py::TestSlugifyUnicode::test_multiple_stopword_occurances PASSED    [ 64%]\ntest.py::TestSlugifyUnicode::test_multiple_stopwords PASSED              [ 65%]\ntest.py::TestSlugifyUnicode::test_non_word_characters PASSED             [ 67%]\ntest.py::TestSlugifyUnicode::test_numbers_and_symbols PASSED             [ 68%]\ntest.py::TestSlugifyUnicode::test_numbers_only PASSED                    [ 69%]\ntest.py::TestSlugifyUnicode::test_phonetic_conversion_of_eastern_scripts PASSED [ 70%]\ntest.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore PASSED   [ 71%]\ntest.py::TestSlugifyUnicode::test_regex_pattern_keep_underscore_with_underscore_as_separator PASSED [ 73%]\ntest.py::TestSlugifyUnicode::test_replacements PASSED                    [ 74%]\ntest.py::TestSlugifyUnicode::test_replacements_german_umlaut_custom PASSED [ 75%]\ntest.py::TestSlugifyUnicode::test_save_order PASSED                      [ 76%]\ntest.py::TestSlugifyUnicode::test_save_order_rtl PASSED                  [ 78%]\ntest.py::TestSlugifyUnicode::test_starts_with_number PASSED              [ 79%]\ntest.py::TestSlugifyUnicode::test_stopword_removal PASSED                [ 80%]\ntest.py::TestSlugifyUnicode::test_stopword_removal_casesensitive PASSED  [ 81%]\ntest.py::TestSlugifyUnicode::test_stopwords_with_different_separator PASSED [ 82%]\ntest.py::TestSlugifyUnicode::test_word_boundary PASSED                   [ 84%]\ntest.py::TestUtils::test_smart_truncate_no_max_length PASSED             [ 85%]\ntest.py::TestUtils::test_smart_truncate_no_seperator PASSED              [ 86%]\ntest.py::TestCommandParams::test_affirmative_flags PASSED                [ 87%]\ntest.py::TestCommandParams::test_defaults PASSED                         [ 89%]\ntest.py::TestCommandParams::test_multivalued_options_with_text PASSED    [ 90%]\ntest.py::TestCommandParams::test_negative_flags PASSED                   [ 91%]\ntest.py::TestCommandParams::test_replacements_right PASSED               [ 92%]\ntest.py::TestCommandParams::test_replacements_wrong PASSED               [ 93%]\ntest.py::TestCommandParams::test_text_in_cli PASSED                      [ 95%]\ntest.py::TestCommandParams::test_text_in_cli_multi PASSED                [ 96%]\ntest.py::TestCommandParams::test_text_in_stdin PASSED                    [ 97%]\ntest.py::TestCommandParams::test_two_text_sources_fails PASSED           [ 98%]\ntest.py::TestCommandParams::test_valued_arguments PASSED                 [100%]\n\n-------- generated xml file: /tmp/pytestgen_g1nk_xr7/scratch/junit.xml ---------\n============================== 82 passed in 0.20s ==============================\n"
+  },
+  "baseline_note": "Upstream coverage is already high; little coverage gain is possible.",
+  "wall_s": 289.293916919
+}

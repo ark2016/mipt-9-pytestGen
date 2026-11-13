@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "draft": false,
+  "evidence": "docs\\presentation\\evidence.json",
+  "created_at": "2026-11-13T20:01:29.974Z",
+  "slide_count": 8,
+  "author": "Аркадий Лебедев",
+  "planned_duration_s": 300,
+  "sources": [
+    {
+      "kind": "mbpp",
+      "path": "docs/evaluation/results/mbpp-report.json",
+      "sha256": "070bcafda937b69e3d796945e49afb9c6c6122d48082dbb20839bb2f67db1f35"
+    },
+    {
+      "kind": "heuristic",
+      "path": "docs/evaluation/results/heuristic-report.json",
+      "sha256": "f2c2f1a5954669ad72aaec09e2413f1a98a44524091e1939971cd2f34742259d"
+    },
+    {
+      "kind": "library",
+      "path": "docs/evaluation/results/library-report.json",
+      "sha256": "869d0be2da389bae92491af069a4e56236f8a4ab213e28526f8537d5c241d26b"
+    }
+  ],
+  "source_commit": "c99474b8e3e752768e48ba9d8c98b559faaef604",
+  "ci": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/43495706627",
+  "checks": {
+    "mbpp_summary_recomputed": true,
+    "heuristic_confusion_recomputed": true,
+    "library_counts_coverage_gain_recomputed": true,
+    "all_required_evidence": true
+  }
+}

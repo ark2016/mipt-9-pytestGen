@@ -1,0 +1,47 @@
+{
+  "source_commit": "c99474b8e3e752768e48ba9d8c98b559faaef604",
+  "library_application_fingerprint_matches_git": true,
+  "library_benchmark_fingerprint_matches_git": true,
+  "application_sha256": "69a02517d937d51d450573fb05edbbc8d632bc214e4e0c2eeff9b93fcf7ab021",
+  "benchmark_sha256": "c60fbfd62e51d642b593ec446cb60378bcc21323b975c4a88e382caf915e6568",
+  "checks_from_generator": {
+    "mbpp_summary_recomputed": true,
+    "heuristic_confusion_recomputed": true,
+    "library_counts_coverage_gain_recomputed": true,
+    "all_required_evidence": true
+  },
+  "raw_reports": [
+    {
+      "kind": "mbpp",
+      "path": "docs/evaluation/results/mbpp-report.json",
+      "sha256": "070bcafda937b69e3d796945e49afb9c6c6122d48082dbb20839bb2f67db1f35"
+    },
+    {
+      "kind": "heuristic",
+      "path": "docs/evaluation/results/heuristic-report.json",
+      "sha256": "f2c2f1a5954669ad72aaec09e2413f1a98a44524091e1939971cd2f34742259d"
+    },
+    {
+      "kind": "library",
+      "path": "docs/evaluation/results/library-report.json",
+      "sha256": "869d0be2da389bae92491af069a4e56236f8a4ab213e28526f8537d5c241d26b"
+    }
+  ],
+  "final_files": [
+    {
+      "path": "docs/presentation/pytestgen-defense.pptx",
+      "bytes": 293156,
+      "sha256": "9a1906ca60111f969bc951805c426351b5914c369339529192fe5dafdae79ef3"
+    },
+    {
+      "path": "docs/presentation/pytestgen-defense.pdf",
+      "bytes": 145522,
+      "sha256": "43eebed07adf796b7197dd946c8946aa1818f50d7b670f60d731b49ca5379637"
+    },
+    {
+      "path": "docs/presentation/speaker-notes.md",
+      "bytes": 22981,
+      "sha256": "da7c6cedce79ae687a23cc57b24d05c5970598bb0a7c6637f558637af80b7d61"
+    }
+  ]
+}

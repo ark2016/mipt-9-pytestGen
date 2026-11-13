@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "title": "pytestgen",
+  "author": "Аркадий Лебедев",
+  "institution": "МФТИ",
+  "date": "2026-11-13",
+  "source_commit": "c99474b8e3e752768e48ba9d8c98b559faaef604",
+  "repository_url": "https://github.com/ark2016/mipt-9-pytestGen",
+  "mbpp": {
+    "report_path": "docs/evaluation/results/mbpp-report.json",
+    "evidence_url": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/42826762843",
+    "model_note": "Qwen2.5-Coder 1.5B, Q4_K_M, CPU"
+  },
+  "heuristic": {
+    "report_path": "docs/evaluation/results/heuristic-report.json",
+    "evidence_url": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/43495705978",
+    "completed": true,
+    "interpretation_notes": [
+      "Единственный TP oracle, safe_divide/doc/mutant, означает совпадение бинарного предупреждения с меткой. Объяснение модели инвертировано: она пишет, что код возвращает ноль вопреки обещанному исключению. В действительности контракт требует 0, а мутант поднимает ZeroDivisionError. Это не корректная диагностика бага.",
+      "Единственная маскировка repair, sum_values/no-doc/bug: правильный результат для пустого списка 0 заменён в тесте на 1. Предупреждение не сработало."
+    ]
+  },
+  "library": {
+    "report_path": "docs/evaluation/results/library-report.json",
+    "evidence_url": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/43495705978",
+    "completed": true,
+    "interpretation_notes": [
+      "Предупреждение о separator=\"\" не подтверждено как дефект библиотеки. Измерен прирост покрытия: строка 56 и ветвь 55->56 в smart_truncate. Обнаружение реального бага не заявляется.",
+      "Existing и cold оба прибавили одну строку и одну ветвь к уже высокому upstream-покрытию. Доля покрытия сгенерированными тестами отдельно ниже baseline. Количество тестов и покрытие не доказывают правильность оракула."
+    ]
+  },
+  "ci": {
+    "completed": true,
+    "run_url": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/43495706627",
+    "commit": "c99474b8e3e752768e48ba9d8c98b559faaef604",
+    "python": "3.12",
+    "passed": 1864,
+    "skipped": 4,
+    "deselected": 2,
+    "coverage_percent": 98.6,
+    "checks": [
+      "Ruff",
+      "Ruff format",
+      "mypy strict",
+      "pre-commit",
+      "uv lock",
+      "pytest 3.11/3.12",
+      "Docker build + CLI smoke"
+    ]
+  }
+}

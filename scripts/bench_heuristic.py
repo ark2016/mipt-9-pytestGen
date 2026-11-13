@@ -121,6 +121,28 @@ def observes_target(source: str, run: RunResult, line: int) -> bool:
     return bool(has_assert and run.coverage and line in run.coverage.executed_lines)
 
 
+def validate_witness(
+    target: Path,
+    case: MutationCase,
+    documented: bool,
+) -> tuple[bool, dict[str, object]]:
+    target.write_text(case.source(mutant=False, documented=documented), encoding="utf-8")
+    good = run_tests(target, case.test(correct=True))
+    bad = run_tests(target, case.test(correct=False))
+    target.write_text(case.source(mutant=True, documented=documented), encoding="utf-8")
+    mutant = run_tests(target, case.test(correct=True))
+    valid = (
+        verified(good, TestStatus.PASSED)
+        and verified(bad, TestStatus.FAILED)
+        and verified(mutant, TestStatus.FAILED)
+    )
+    return valid, {
+        "good_on_reference": evidence(good),
+        "bad_on_reference": evidence(bad),
+        "good_on_mutant": evidence(mutant),
+    }
+
+
 def evaluate_repair(
     case: MutationCase,
     *,
@@ -143,21 +165,9 @@ def evaluate_repair(
     }
     with tempfile.TemporaryDirectory(prefix="pytestgen_repair_eval_") as directory:
         target = Path(directory) / "solution.py"
-        target.write_text(str(row["reference_source"]), encoding="utf-8")
-        reference_good = run_tests(target, case.test(correct=True))
-        reference_bad = run_tests(target, case.test(correct=False))
-        target.write_text(case.source(mutant=True, documented=documented), encoding="utf-8")
-        mutant_good = run_tests(target, case.test(correct=True))
-        row["witness_validation"] = {
-            "good_on_reference": evidence(reference_good),
-            "bad_on_reference": evidence(reference_bad),
-            "good_on_mutant": evidence(mutant_good),
-        }
-        if not (
-            verified(reference_good, TestStatus.PASSED)
-            and verified(reference_bad, TestStatus.FAILED)
-            and verified(mutant_good, TestStatus.FAILED)
-        ):
+        valid, validation = validate_witness(target, case, documented)
+        row["witness_validation"] = validation
+        if not valid:
             return row
         target.write_text(str(row["target_source"]), encoding="utf-8")
         module = AstModuleAnalyzer().analyze(target, target.parent)
@@ -194,19 +204,20 @@ def evaluate_repair(
             )
             current = fixed
             if verified(outcome, TestStatus.PASSED):
-                row["repaired_test"] = fixed.source
-                row["predicted_suspicious"] = warning
+                row.update(repaired_test=fixed.source, predicted_suspicious=warning)
                 if not observes_target(fixed.source, outcome, function.end_lineno):
                     row["status"] = "degenerate_repair"
                     row["actual_masking"] = bug
                     break
-                row["status"] = "classified"
-                row["actual_masking"] = bug
+                row.update(status="classified", actual_masking=bug)
                 # Running the repair on the reference distinguishes wrong oracles from
                 # changing inputs/weaker assertions that cease to expose the mutation.
                 target.write_text(str(row["reference_source"]), encoding="utf-8")
                 on_reference = run_tests(target, fixed.source)
                 row["repaired_on_reference"] = evidence(on_reference)
+                if not bug and not verified(on_reference, TestStatus.PASSED):
+                    row["status"] = "unverified_reference"
+                    break
                 row["repair_effect"] = (
                     "oracle_changed"
                     if bug and verified(on_reference, TestStatus.FAILED)
@@ -216,6 +227,17 @@ def evaluate_repair(
                     if bug
                     else "corrected_bad_test"
                 )
+                break
+            if (
+                outcome.timed_out
+                or outcome.collection_error
+                or not outcome.outcomes
+                or any(
+                    item.status in (TestStatus.SKIPPED, TestStatus.XFAILED, TestStatus.TIMEOUT)
+                    for item in outcome.outcomes
+                )
+            ):
+                row["status"] = "unverified_failure"
                 break
     return row
 
@@ -310,16 +332,20 @@ def summaries(
     repairs: list[dict[str, object]], oracles: list[dict[str, object]]
 ) -> dict[str, object]:
     inclusive = [
-        {**row, "status": "classified"}
-        if row["status"] == "degenerate_repair" and row["bug_in_target"]
-        else row
+        {**row, "status": "classified"} if row["status"] == "degenerate_repair" else row
         for row in repairs
     ]
     return {
         "repair_scenarios": len(repairs),
         "repair_status": dict(Counter(str(row["status"]) for row in repairs)),
         "repair_all": confusion(repairs, "actual_masking"),
-        "repair_including_vacuous_masks": confusion(inclusive, "actual_masking"),
+        "repair_all_passing_rewrites": confusion(inclusive, "actual_masking"),
+        "repair_all_passing_documented": confusion(
+            [r for r in inclusive if r["documented"]], "actual_masking"
+        ),
+        "repair_all_passing_undocumented": confusion(
+            [r for r in inclusive if not r["documented"]], "actual_masking"
+        ),
         "repair_attrition_by_condition": {
             f"{'doc' if doc else 'no-doc'}/{'bug' if bug else 'bad-test'}": dict(
                 Counter(
@@ -419,23 +445,34 @@ def main() -> None:
         for case in CASES[args.shard :: args.shards]:
             for documented in (True, False):
                 for bug in (True, False):
-                    repairs.append(
-                        evaluate_repair(
-                            case,
-                            documented=documented,
-                            bug=bug,
-                            repairer=repairer,
-                            attempts=args.attempts,
-                        )
+                    before = len(audited.calls)
+                    repair_row = evaluate_repair(
+                        case,
+                        documented=documented,
+                        bug=bug,
+                        repairer=repairer,
+                        attempts=args.attempts,
                     )
-                    oracles.append(
-                        evaluate_oracle(
-                            case,
-                            documented=documented,
-                            bug=bug,
-                            reviewer=reviewer,
-                        )
+                    repair_row["llm_calls"] = audited.calls[before:]
+                    if repair_row["status"] == "no_valid_repair" and any(
+                        "error" in call for call in audited.calls[before:]
+                    ):
+                        repair_row["status"] = "llm_error"
+                    repairs.append(repair_row)
+                    before = len(audited.calls)
+                    oracle_row = evaluate_oracle(
+                        case, documented=documented, bug=bug, reviewer=reviewer
                     )
+                    oracle_row["llm_calls"] = audited.calls[before:]
+                    if oracle_row.get("verdict") == "unreviewed":
+                        oracle_row["abstention_reason"] = (
+                            "no_docstring"
+                            if not documented
+                            else "request_failed"
+                            if any("error" in c for c in audited.calls[before:])
+                            else "invalid_response"
+                        )
+                    oracles.append(oracle_row)
                     _log.info(
                         "heuristic_case", case=repairs[-1]["id"], status=repairs[-1]["status"]
                     )

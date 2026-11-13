@@ -10,7 +10,7 @@ import pytest
 
 from pytestgen.application.repair import TestRepairer
 from pytestgen.domain.llm import ChatRequest, ChatResponse
-from pytestgen.domain.models import TestStatus
+from pytestgen.domain.models import RunResult, TestOutcome, TestStatus
 
 _SCRIPTS = Path(__file__).resolve().parents[2] / "scripts"
 sys.path.insert(0, str(_SCRIPTS))
@@ -88,7 +88,7 @@ def test_vacuous_repair_is_retained_in_inclusive_masking_analysis() -> None:
     assert row["status"] == "degenerate_repair"
     summary = bench.summaries([row], [])
     assert summary["repair_all"]["n"] == 0
-    assert summary["repair_including_vacuous_masks"]["tp"] == 1
+    assert summary["repair_all_passing_rewrites"]["tp"] == 1
 
 
 def test_unfixed_test_is_attrition_not_a_true_negative() -> None:
@@ -137,3 +137,49 @@ def test_authored_case_reference_and_mutation_execute(tmp_path: Path, case: obje
     assert bench.verified(bench.run_tests(target, case.test(correct=False)), TestStatus.FAILED)
     target.write_text(case.source(mutant=True, documented=True), encoding="utf-8")
     assert bench.verified(bench.run_tests(target, case.test(correct=True)), TestStatus.FAILED)
+
+
+@pytest.mark.parametrize(
+    ("terminal", "expected"),
+    [
+        (RunResult(timed_out=True), "unverified_failure"),
+        (
+            RunResult(outcomes=(TestOutcome("test_witness", TestStatus.PASSED),)),
+            "unverified_reference",
+        ),
+    ],
+)
+def test_terminal_failure_is_not_counted_as_a_benign_correction(
+    monkeypatch: pytest.MonkeyPatch, terminal: RunResult, expected: str
+) -> None:
+    passed = RunResult(outcomes=(TestOutcome("test_witness", TestStatus.PASSED),))
+    failed = RunResult(outcomes=(TestOutcome("test_witness", TestStatus.FAILED, "assert wrong"),))
+    responses = iter([passed, failed, failed, failed, terminal, failed])
+    monkeypatch.setattr(bench, "run_tests", lambda *_: next(responses))
+    monkeypatch.setattr(bench, "observes_target", lambda *_: True)
+    case = bench.CASES[0]
+    row = bench.evaluate_repair(
+        case,
+        documented=True,
+        bug=False,
+        repairer=TestRepairer(Reply(case.test(correct=True))),
+        attempts=1,
+    )
+    assert row["status"] == expected
+    assert bench.confusion([row], "actual_masking")["n"] == 0
+
+
+def test_all_passing_matrix_includes_both_kinds_of_vacuous_rewrites() -> None:
+    rows = [
+        {
+            "status": "degenerate_repair",
+            "bug_in_target": bug,
+            "actual_masking": bug,
+            "documented": True,
+            "predicted_suspicious": True,
+        }
+        for bug in (True, False)
+    ]
+    metrics = bench.summaries(rows, [])
+    assert metrics["repair_all_passing_rewrites"]["precision"] == 0.5
+    assert metrics["repair_all_passing_documented"]["fp"] == 1

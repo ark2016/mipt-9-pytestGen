@@ -18,6 +18,7 @@ from pytestgen.application.outputs import check_writable, default_output, module
 from pytestgen.application.progress import StageAnnouncer
 from pytestgen.application.selection import FailingFreeTest, SuiteSelector
 from pytestgen.application.state import Filled, RunState
+from pytestgen.application.suspicion import is_suspicious_repair
 from pytestgen.application.targets import is_hybrid_target, select_functions
 from pytestgen.application.texts import first_line, last_line
 from pytestgen.codegen import map_test_nodes
@@ -186,11 +187,6 @@ def _unverified(result: RunResult) -> bool:
     return result.timed_out or (result.coverage is None and not result.outcomes)
 
 
-def _is_assertion_failure(outcome: TestOutcome) -> bool:
-    text = f"{outcome.message}\n{outcome.traceback}"
-    return outcome.message.lstrip().startswith("assert") or "AssertionError" in text
-
-
 # --------------------------------------------------------------------------- one run
 
 
@@ -339,7 +335,7 @@ class _Run:
         been the right one.
         """
         function = self._function_or_none(test.function)
-        if function is None or not function.docstring or not _is_assertion_failure(outcome):
+        if function is None or not is_suspicious_repair(function, outcome):
             return
         _log.warning("test_rewritten_to_match_code", test=test.name, function=test.function)
         self._state.note_rewrite(

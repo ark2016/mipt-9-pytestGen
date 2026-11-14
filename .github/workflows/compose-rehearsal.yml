@@ -1,0 +1,42 @@
+name: Compose release rehearsal
+on:
+  push:
+    branches: ["bench/compose-rehearsal-1794634179615"]
+permissions:
+  contents: read
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and generate with the documented Compose command
+        run: |
+          docker compose version
+          time docker compose run --rm --build pytestgen
+      - name: Verify real model usage, report and generated tests
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          d=json.loads(pathlib.Path('out/report.json').read_text())
+          assert d['kept_tests']>0 and d['llm_usage']['completion_tokens']>0, d
+          assert pathlib.Path('out/report.md').stat().st_size>0
+          print('kept',d['kept_tests'],'usage',d['llm_usage'],'coverage',d['delta']['before'],d['delta']['after'])
+          PY
+          docker compose run --rm --no-deps -e PYTHONPATH=/work/project --entrypoint python pytestgen -m pytest -q -o cache_dir=/tmp/pytest-cache project/tests out/test_pricing_generated.py
+      - name: Preserve reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compose-rehearsal
+          path: |
+            out/report.md
+            out/report.json
+            out/test_pricing_generated.py
+          if-no-files-found: warn
+      - name: Inspect and stop the runner stack
+        if: always()
+        run: |
+          docker compose ps -a
+          docker compose logs --tail 12 llm
+          docker compose down

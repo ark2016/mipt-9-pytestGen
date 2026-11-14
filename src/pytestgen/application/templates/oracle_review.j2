@@ -1,0 +1,12 @@
+Function under test (module {{ module }}):
+{{ source }}
+
+Recorded behaviour of the current implementation:
+{{ behaviours }}
+
+For each numbered line decide whether the result is what the docstring and the function name promise.
+- "ok": consistent with the documented intent.
+- "suspicious": clearly contradicts the documentation, so the code may have a bug. Give a one-sentence explanation.
+If unsure, answer "ok". Ignore code style.
+Reply with JSON only, one entry per line above:
+{"reviews": [{"index": 0, "verdict": "ok", "explanation": ""}]}

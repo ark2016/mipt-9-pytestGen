@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Here are the tests for `clamp`:\n\n```python\nimport pytest\n\nfrom calc import clamp\n\n\n@pytest.mark.parametrize(\n    (\"value\", \"low\", \"high\", \"expected\"),\n    [\n        (5, 0, 10, 5),\n        (-1, 0, 10, 0),\n        (11, 0, 10, 10),\n    ],\n)\ndef test_clamp(value, low, high, expected):\n    assert clamp(value, low, high) == expected\n```\n\nThese cover the inside, below and above branches."
+      }
+    }
+  ],
+  "created": 1760000000,
+  "model": "qwen2.5-coder-1.5b-instruct",
+  "system_fingerprint": "b4991-5f8c1a2",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 142,
+    "prompt_tokens": 318,
+    "total_tokens": 460
+  },
+  "id": "chatcmpl-Xk3mQp0vA1",
+  "timings": {
+    "prompt_n": 318,
+    "prompt_ms": 412.7,
+    "predicted_n": 142,
+    "predicted_ms": 3180.4,
+    "predicted_per_second": 44.65
+  }
+}

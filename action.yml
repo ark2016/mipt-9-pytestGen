@@ -1,0 +1,188 @@
+name: pytestgen PR tests
+description: >-
+  Generate pytest tests with pytestgen for the Python files changed in a pull request, post the
+  coverage-gain report as one sticky PR comment and upload the generated tests as an artifact.
+  Nothing is ever committed to the PR branch.
+author: pytestgen
+branding:
+  icon: check-circle
+  color: green
+
+# Usage (see .github/workflows/pr-tests.yml for a complete example):
+#
+#   permissions: { contents: read, pull-requests: write }
+#   steps:
+#     - uses: actions/checkout@v4
+#       with: { fetch-depth: 0 }          # the diff against the PR base needs history
+#     - uses: <owner>/<repo>@<tag>
+#       with:
+#         llm-base-url: ${{ vars.PYTESTGEN_LLM_BASE_URL }}
+#         llm-model:    ${{ vars.PYTESTGEN_LLM_MODEL }}
+#         llm-api-key:  ${{ secrets.PYTESTGEN_LLM_API_KEY }}
+#
+# The LLM server is not started here: point llm-base-url at any OpenAI-compatible endpoint
+# (a cloud provider, or llama.cpp started by an earlier step). Linux runners only.
+
+inputs:
+  llm-base-url:
+    description: OpenAI-compatible base URL (PYTESTGEN_LLM_BASE_URL). Empty keeps the pytestgen default.
+    required: false
+    default: ""
+  llm-model:
+    description: Model name sent to the endpoint (PYTESTGEN_LLM_MODEL). Empty keeps the pytestgen default.
+    required: false
+    default: ""
+  llm-api-key:
+    description: API key for the endpoint (PYTESTGEN_LLM_API_KEY); leave empty for a local server.
+    required: false
+    default: ""
+  llm-json-mode:
+    description: "How to ask for structured output: json_schema, json_object or none."
+    required: false
+    default: json_schema
+  paths:
+    description: Glob(s) of files to consider, one per line or comma-separated. tests/ and __init__.py are always excluded.
+    required: false
+    default: "src/**/*.py"
+  max-files:
+    description: Upper bound on processed files; the rest is listed in the comment.
+    required: false
+    default: "5"
+  strategy:
+    description: "hybrid (AST + Z3 + LLM slots) or llm (LLM-written tests only)."
+    required: false
+    default: hybrid
+  python-version:
+    description: Python used to run pytestgen (and the sandbox that runs the target code).
+    required: false
+    default: "3.12"
+  extra-packages:
+    description: Space-separated requirements installed next to pytestgen, for the imports of the code under test.
+    required: false
+    default: ""
+  comment:
+    description: Post or update the sticky pull-request comment ("true" or "false").
+    required: false
+    default: "true"
+  github-token:
+    description: Token for the comment; needs pull-requests write permission.
+    required: false
+    default: ${{ github.token }}
+  output-dir:
+    description: Directory (relative to the workspace) for reports, logs and generated tests.
+    required: false
+    default: out
+  artifact-name:
+    description: Name of the uploaded artifact with the output directory.
+    required: false
+    default: pytestgen-tests
+  file-timeout:
+    description: Seconds allowed for one file.
+    required: false
+    default: "1200"
+  fail-on-error:
+    description: Fail the step when a file could not be processed (errors are always shown in the comment).
+    required: false
+    default: "false"
+
+outputs:
+  report-path:
+    description: Absolute path of summary.json (per-file status and coverage numbers).
+    value: ${{ steps.report.outputs.report-path }}
+  comment-body-path:
+    description: Absolute path of the markdown that is posted as the PR comment.
+    value: ${{ steps.report.outputs.comment-body-path }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "0.9.17"
+        enable-cache: false
+
+    - name: Install pytestgen from the action checkout
+      id: install
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        PYTHON_VERSION: ${{ inputs.python-version }}
+        EXTRA_PACKAGES: ${{ inputs.extra-packages }}
+      run: |
+        set -euo pipefail
+        venv="${RUNNER_TEMP}/pytestgen-venv"
+        # Locked, non-editable install in a private environment outside the workspace.
+        UV_PROJECT_ENVIRONMENT="$venv" uv sync --project "$ACTION_PATH" \
+          --frozen --no-dev --no-editable --python "$PYTHON_VERSION"
+        if [ -n "$EXTRA_PACKAGES" ]; then
+          # shellcheck disable=SC2086  # intentional word splitting of the package list
+          uv pip install --python "$venv/bin/python" $EXTRA_PACKAGES
+        fi
+        "$venv/bin/pytestgen" version
+        echo "venv=$venv" >> "$GITHUB_OUTPUT"
+
+    - name: Select changed files
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        VENV: ${{ steps.install.outputs.venv }}
+        PATHS: ${{ inputs.paths }}
+        MAX_FILES: ${{ inputs.max-files }}
+        OUT_DIR: ${{ inputs.output-dir }}
+      run: |
+        mkdir -p "$OUT_DIR"
+        "$VENV/bin/python" "$ACTION_PATH/scripts/pr_comment.py" select \
+          --out-dir "$OUT_DIR" --paths "$PATHS" --max-files "$MAX_FILES"
+
+    - name: Generate tests
+      id: generate
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        VENV: ${{ steps.install.outputs.venv }}
+        OUT_DIR: ${{ inputs.output-dir }}
+        STRATEGY: ${{ inputs.strategy }}
+        FILE_TIMEOUT: ${{ inputs.file-timeout }}
+        FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
+        # Empty values are dropped by the script, so pytestgen keeps its own defaults.
+        PYTESTGEN_LLM_BASE_URL: ${{ inputs.llm-base-url }}
+        PYTESTGEN_LLM_MODEL: ${{ inputs.llm-model }}
+        PYTESTGEN_LLM_API_KEY: ${{ inputs.llm-api-key }}
+        PYTESTGEN_LLM_JSON_MODE: ${{ inputs.llm-json-mode }}
+      run: |
+        flags=()
+        if [ "$FAIL_ON_ERROR" = "true" ]; then flags+=(--fail-on-error); fi
+        "$VENV/bin/python" "$ACTION_PATH/scripts/pr_comment.py" generate \
+          --out-dir "$OUT_DIR" --pytestgen-bin "$VENV/bin/pytestgen" \
+          --strategy "$STRATEGY" --timeout "$FILE_TIMEOUT" "${flags[@]}"
+
+    - name: Build the report
+      id: report
+      if: ${{ !cancelled() && steps.generate.outcome != 'skipped' }}
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        VENV: ${{ steps.install.outputs.venv }}
+        OUT_DIR: ${{ inputs.output-dir }}
+      run: |
+        "$VENV/bin/python" "$ACTION_PATH/scripts/pr_comment.py" report --out-dir "$OUT_DIR"
+
+    - name: Post the PR comment
+      if: ${{ !cancelled() && steps.report.outcome == 'success' && inputs.comment == 'true' }}
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        VENV: ${{ steps.install.outputs.venv }}
+        OUT_DIR: ${{ inputs.output-dir }}
+        GH_TOKEN: ${{ inputs.github-token }}
+      run: |
+        "$VENV/bin/python" "$ACTION_PATH/scripts/pr_comment.py" comment --out-dir "$OUT_DIR"
+
+    - name: Upload generated tests and reports
+      if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.output-dir }}
+        if-no-files-found: ignore

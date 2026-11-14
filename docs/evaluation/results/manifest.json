@@ -1,0 +1,29 @@
+{
+  "measured_commit": "c99474b8e3e752768e48ba9d8c98b559faaef604",
+  "new_experiment_url": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/43495705978",
+  "ci_url": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/43495706627",
+  "mbpp_experiment_url": "https://github.com/ark2016/mipt-9-pytestGen/actions/runs/42826762843",
+  "note": "Files copied byte-for-byte from the published GitHub run artifacts; library-run.zip repackages the entire library-report artifact. MBPP comes from its separate historical run.",
+  "files": [
+    {
+      "name": "heuristic-report.json",
+      "bytes": 417641,
+      "sha256": "f2c2f1a5954669ad72aaec09e2413f1a98a44524091e1939971cd2f34742259d"
+    },
+    {
+      "name": "library-report.json",
+      "bytes": 117877,
+      "sha256": "869d0be2da389bae92491af069a4e56236f8a4ab213e28526f8537d5c241d26b"
+    },
+    {
+      "name": "library-run.zip",
+      "bytes": 39049,
+      "sha256": "856d435157adfc499f11d29d44e1185859ff749184ae3f22d29d22471dc85382"
+    },
+    {
+      "name": "mbpp-report.json",
+      "bytes": 63513,
+      "sha256": "070bcafda937b69e3d796945e49afb9c6c6122d48082dbb20839bb2f67db1f35"
+    }
+  ]
+}

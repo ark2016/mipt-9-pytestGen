@@ -1,0 +1,2333 @@
+{
+  "dataset_revision": "f82046ba5aabbbb427dbfd38a254d26bff08b533",
+  "seed": 42,
+  "strategy": "hybrid",
+  "model": "qwen2.5-coder-1.5b-instruct",
+  "max_mutants": 3,
+  "summary": {
+    "tasks": 100,
+    "tasks_with_passing_tests": 56,
+    "tasks_with_kills": 47,
+    "invalid_references": 1,
+    "generation_errors": 0,
+    "unverified_generated_suites": 0,
+    "generated_executed": 353,
+    "passed_reference": 352,
+    "reference_pass_rate": 0.9971671388101983,
+    "tests_passing_reference_and_killing_mutant": 224,
+    "reference_pass_and_kill_rate": 0.6345609065155807,
+    "eligible_mutants": 174,
+    "killed": 104,
+    "survived": 66,
+    "unverified_mutants": 4,
+    "llm_requests": 132,
+    "mutation_score": 0.5977011494252874,
+    "llm_tokens": 81930
+  },
+  "tasks": [
+    {
+      "task_id": 14,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:2:op:None:Mult",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 23,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 10,
+      "passed_reference": 10,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_maximum_Sum_negative_numbers"
+      ],
+      "mutants": [
+        {
+          "id": "0:6:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 9,
+      "llm_tokens": 4189
+    },
+    {
+      "task_id": 24,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 2,
+      "passed_reference": 2,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_binary_to_decimal_returns[z3-1]"
+      ],
+      "mutants": [
+        {
+          "id": "0:8:op:None:Add",
+          "status": "survived"
+        },
+        {
+          "id": "1:4:ops:0:NotEq",
+          "status": "unverified_mutant"
+        },
+        {
+          "id": "2:6:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 26,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 9,
+      "passed_reference": 9,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_check_k_elements_tuple_with_one_element"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:ops:0:NotEq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 6,
+      "llm_tokens": 2633
+    },
+    {
+      "task_id": 27,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 33,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 2,
+      "passed_reference": 2,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_decimal_to_binary_returns[z3-1]"
+      ],
+      "mutants": [
+        {
+          "id": "0:7:op:None:Mult",
+          "status": "killed"
+        },
+        {
+          "id": "1:4:ops:0:NotEq",
+          "status": "unverified_mutant"
+        },
+        {
+          "id": "2:9:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 34,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 2,
+      "passed_reference": 2,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_find_missing_raises[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_find_missing_returns[llm_slot-1]"
+      ],
+      "mutants": [
+        {
+          "id": "0:7:ops:0:NotEq",
+          "status": "killed"
+        },
+        {
+          "id": "1:12:op:None:Add",
+          "status": "invalid_mutant"
+        },
+        {
+          "id": "2:4:ops:0:LtE",
+          "status": "killed"
+        },
+        {
+          "id": "3:8:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 2768
+    },
+    {
+      "task_id": 46,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 7,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_test_distinct_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_test_distinct_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_test_distinct_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_test_distinct_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_test_distinct_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_test_distinct_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:value:None:Constant",
+          "status": "killed"
+        },
+        {
+          "id": "1:3:value:None:Constant",
+          "status": "killed"
+        },
+        {
+          "id": "2:2:ops:0:Eq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 505
+    },
+    {
+      "task_id": 47,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 7,
+      "passed_reference": 7,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_compute_last_digit_returns[llm_slot-7]",
+        "pytestgen_tests/test_benchmark.py::test_compute_last_digit_returns[z3-2]"
+      ],
+      "mutants": [
+        {
+          "id": "0:8:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "1:4:value:None:Constant",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "2:5:ops:0:GtE",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "3:9:op:None:Mult",
+          "status": "killed"
+        },
+        {
+          "id": "4:5:op:None:Sub",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 387
+    },
+    {
+      "task_id": 51,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_check_equilateral_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_check_equilateral_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_check_equilateral_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_check_equilateral_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_check_equilateral_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_check_equilateral_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:value:None:Constant",
+          "status": "killed"
+        },
+        {
+          "id": "1:2:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "2:3:value:None:Constant",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 376
+    },
+    {
+      "task_id": 55,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:op:None:Sub",
+          "status": "survived"
+        },
+        {
+          "id": "1:3:op:None:Mult",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 58,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:Lt",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 60,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 3,
+      "passed_reference": 3,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_max_len_sub_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_max_len_sub_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_max_len_sub_returns[llm_slot-3]"
+      ],
+      "mutants": [
+        {
+          "id": "0:8:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "1:11:ops:0:Lt",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "2:8:ops:0:Lt",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "3:8:op:None:And",
+          "status": "killed"
+        },
+        {
+          "id": "4:9:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 959
+    },
+    {
+      "task_id": 62,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 63,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Sub",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 68,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:LtE",
+          "status": "survived"
+        },
+        {
+          "id": "1:3:op:None:Sub",
+          "status": "survived"
+        },
+        {
+          "id": "2:3:ops:0:GtE",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 74,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 3,
+      "passed_reference": 3,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_is_samepatterns_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_is_samepatterns_returns[z3-2]"
+      ],
+      "mutants": [
+        {
+          "id": "0:18:value:None:Constant",
+          "status": "survived"
+        },
+        {
+          "id": "1:17:ops:0:NotEq",
+          "status": "killed"
+        },
+        {
+          "id": "2:10:ops:0:NotIn",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 3087
+    },
+    {
+      "task_id": 82,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:3:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "2:3:op:None:Mult",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 90,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 8,
+      "passed_reference": 8,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:4:ops:0:Gt",
+          "status": "not_detected_by_mbpp"
+        }
+      ],
+      "llm_requests": 12,
+      "llm_tokens": 5534
+    },
+    {
+      "task_id": 92,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 8,
+      "passed_reference": 8,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_is_undulating_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_is_undulating_returns[llm_slot-6]",
+        "pytestgen_tests/test_benchmark.py::test_is_undulating_returns[llm_slot-7]",
+        "pytestgen_tests/test_benchmark.py::test_is_undulating_returns[llm_slot-8]",
+        "pytestgen_tests/test_benchmark.py::test_is_undulating_returns[z3-2]"
+      ],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:LtE",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "1:7:value:None:Constant",
+          "status": "killed"
+        },
+        {
+          "id": "2:5:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "3:3:value:None:Constant",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "4:6:value:None:Constant",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 2224
+    },
+    {
+      "task_id": 94,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 109,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_odd_equivalent_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_odd_equivalent_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_odd_equivalent_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_odd_equivalent_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_odd_equivalent_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_odd_equivalent_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:4:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "1:5:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 484
+    },
+    {
+      "task_id": 112,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:2:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 118,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 121,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_check_triplet_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_check_triplet_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_check_triplet_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_check_triplet_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_check_triplet_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_check_triplet_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "1:6:op:None:Or",
+          "status": "survived"
+        },
+        {
+          "id": "2:2:op:None:And",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 770
+    },
+    {
+      "task_id": 122,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_smart_number_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_smart_number_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_smart_number_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_smart_number_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_smart_number_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_smart_number_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:13:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "1:6:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "2:11:ops:0:Eq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 749
+    },
+    {
+      "task_id": 123,
+      "status": "invalid_reference",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 125,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:6:ops:0:Lt",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "1:5:ops:0:Eq",
+          "status": "survived"
+        },
+        {
+          "id": "2:5:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 1415
+    },
+    {
+      "task_id": 127,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_multiply_int_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_multiply_int_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_multiply_int_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_multiply_int_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_multiply_int_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_multiply_int_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:4:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "1:5:value:None:Constant",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "2:6:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "3:9:op:None:Sub",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 586
+    },
+    {
+      "task_id": 130,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 2,
+      "passed_reference": 2,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_max_occurrences_returns[z3-1]"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 136,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 10,
+      "passed_reference": 10,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_cal_electbill_returns[z3-4]",
+        "pytestgen_tests/test_benchmark.py::test_cal_electbill_returns[z3-5]",
+        "pytestgen_tests/test_benchmark.py::test_cal_electbill_returns[z3-8]",
+        "pytestgen_tests/test_benchmark.py::test_cal_electbill_returns[z3-9]"
+      ],
+      "mutants": [
+        {
+          "id": "0:8:ops:0:LtE",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "1:12:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "2:9:op:None:Mult",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "3:6:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "4:9:op:None:Add",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "5:12:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 146,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 1,
+      "llm_tokens": 292
+    },
+    {
+      "task_id": 147,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Sub",
+          "status": "survived"
+        },
+        {
+          "id": "1:4:op:None:Add",
+          "status": "survived"
+        },
+        {
+          "id": "2:4:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 12,
+      "llm_tokens": 7858
+    },
+    {
+      "task_id": 151,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_gcd_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_gcd_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_gcd_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_gcd_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_gcd_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:NotEq",
+          "status": "killed"
+        },
+        {
+          "id": "1:6:ops:0:Eq",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 2129
+    },
+    {
+      "task_id": 153,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:2:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "2:2:op:None:Sub",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 159,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 16,
+      "passed_reference": 16,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[llm_slot-13]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[llm_slot-14]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[llm_slot-15]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[llm_slot-16]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[z3-10]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[z3-2]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[z3-3]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[z3-4]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[z3-5]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[z3-6]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[z3-7]",
+        "pytestgen_tests/test_benchmark.py::test_month_season_returns[z3-8]"
+      ],
+      "mutants": [
+        {
+          "id": "0:12:ops:0:Gt",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "1:4:ops:0:In",
+          "status": "killed"
+        },
+        {
+          "id": "2:14:ops:0:Eq",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "3:20:op:None:And",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "4:10:op:None:And",
+          "status": "killed"
+        },
+        {
+          "id": "5:16:ops:0:Eq",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "6:20:ops:0:Eq",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "7:10:ops:0:Gt",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "8:20:ops:0:Gt",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "9:18:op:None:And",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "10:18:ops:0:Gt",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "11:14:ops:0:Gt",
+          "status": "not_detected_by_mbpp"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 992
+    },
+    {
+      "task_id": 161,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:NotIn",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 183,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_count_pairs_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_count_pairs_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_count_pairs_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_count_pairs_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_count_pairs_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_count_pairs_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "1:5:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "2:5:op:None:Or",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 725
+    },
+    {
+      "task_id": 185,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:2:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "2:2:op:None:Sub",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 187,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_longest_common_subsequence_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_longest_common_subsequence_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_longest_common_subsequence_returns[llm_slot-4]"
+      ],
+      "mutants": [
+        {
+          "id": "0:7:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "1:5:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "2:2:ops:0:Eq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 701
+    },
+    {
+      "task_id": 192,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 8,
+      "passed_reference": 8,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_check_string_returns[llm_slot-7]",
+        "pytestgen_tests/test_benchmark.py::test_check_string_returns[llm_slot-8]"
+      ],
+      "mutants": [
+        {
+          "id": "0:9:op:None:And",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 425
+    },
+    {
+      "task_id": 194,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_octal_to_decimal_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_octal_to_decimal_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_octal_to_decimal_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_octal_to_decimal_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_octal_to_decimal_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_octal_to_decimal_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:9:op:None:Mult",
+          "status": "killed"
+        },
+        {
+          "id": "1:9:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "2:10:op:None:Mult",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 343
+    },
+    {
+      "task_id": 196,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:NotEq",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 197,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 200,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:ops:0:Eq",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 204,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_count_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_count_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_count_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_count_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_count_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_count_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:4:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "1:5:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 448
+    },
+    {
+      "task_id": 205,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 225,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 11,
+      "passed_reference": 11,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_find_Min_left_side",
+        "pytestgen_tests/test_benchmark.py::test_find_Min_right_side",
+        "pytestgen_tests/test_benchmark.py::test_find_min_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_find_min_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_find_min_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_find_min_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_find_min_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_find_min_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:4:ops:0:Eq",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "1:5:op:None:Sub",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "2:2:ops:0:Lt",
+          "status": "killed"
+        },
+        {
+          "id": "3:6:ops:0:Gt",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "4:7:op:None:Add",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "5:3:op:None:Add",
+          "status": "unverified_mutant"
+        },
+        {
+          "id": "6:3:op:None:Sub",
+          "status": "not_detected_by_mbpp"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 1295
+    },
+    {
+      "task_id": 227,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_min_of_three_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_min_of_three_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_min_of_three_returns[llm_slot-5]"
+      ],
+      "mutants": [
+        {
+          "id": "0:4:ops:0:LtE",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "1:4:ops:0:LtE",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "2:2:ops:0:LtE",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "3:2:op:None:And",
+          "status": "killed"
+        },
+        {
+          "id": "4:2:ops:0:LtE",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "5:4:op:None:And",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 525
+    },
+    {
+      "task_id": 240,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 243,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 2,
+      "passed_reference": 2,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 1,
+      "llm_tokens": 238
+    },
+    {
+      "task_id": 246,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_babylonian_squareroot_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_babylonian_squareroot_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_babylonian_squareroot_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_babylonian_squareroot_returns[llm_slot-6]",
+        "pytestgen_tests/test_benchmark.py::test_babylonian_squareroot_returns[z3-1]",
+        "pytestgen_tests/test_benchmark.py::test_babylonian_squareroot_returns[z3-2]"
+      ],
+      "mutants": [
+        {
+          "id": "0:9:op:None:Add",
+          "status": "invalid_mutant"
+        },
+        {
+          "id": "1:3:value:None:Constant",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "2:5:op:None:Add",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "3:6:ops:0:NotEq",
+          "status": "killed"
+        },
+        {
+          "id": "4:2:ops:0:Eq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 353
+    },
+    {
+      "task_id": 269,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 285,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 2,
+      "llm_tokens": 2157
+    },
+    {
+      "task_id": 290,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 293,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:op:None:Add",
+          "status": "survived"
+        },
+        {
+          "id": "1:3:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "2:3:op:None:Mult",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 298,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:In",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 306,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_max_sum_increasing_subseq_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_max_sum_increasing_subseq_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_max_sum_increasing_subseq_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_max_sum_increasing_subseq_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:6:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "1:13:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "2:11:op:None:And",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 6,
+      "llm_tokens": 7487
+    },
+    {
+      "task_id": 312,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:3:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "2:3:op:None:Mult",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 313,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 8,
+      "passed_reference": 8,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:ops:0:GtE",
+          "status": "not_detected_by_mbpp"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 327
+    },
+    {
+      "task_id": 319,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 320,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_sum_difference_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_sum_difference_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_sum_difference_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_sum_difference_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_sum_difference_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_sum_difference_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:op:None:Mult",
+          "status": "killed"
+        },
+        {
+          "id": "1:8:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "2:6:op:None:Add",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "3:5:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 334
+    },
+    {
+      "task_id": 327,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 11,
+      "passed_reference": 11,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_all_equal",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_all_not_equal",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_returns[llm_slot-6]",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_x_equals_y",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_y_equals_z",
+        "pytestgen_tests/test_benchmark.py::test_check_isosceles_z_equals_x"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:value:None:Constant",
+          "status": "killed"
+        },
+        {
+          "id": "1:2:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "2:3:value:None:Constant",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 844
+    },
+    {
+      "task_id": 332,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 7,
+      "passed_reference": 7,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_char_frequency_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_char_frequency_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_char_frequency_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_char_frequency_returns[llm_slot-6]",
+        "pytestgen_tests/test_benchmark.py::test_char_frequency_returns[llm_slot-7]",
+        "pytestgen_tests/test_benchmark.py::test_char_frequency_returns[z3-1]"
+      ],
+      "mutants": [
+        {
+          "id": "0:6:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "1:5:ops:0:In",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 359
+    },
+    {
+      "task_id": 336,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 2,
+      "passed_reference": 2,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_check_monthnum_returns[z3-1]",
+        "pytestgen_tests/test_benchmark.py::test_check_monthnum_returns[z3-2]"
+      ],
+      "mutants": [
+        {
+          "id": "0:3:value:None:Constant",
+          "status": "killed"
+        },
+        {
+          "id": "1:5:value:None:Constant",
+          "status": "killed"
+        },
+        {
+          "id": "2:2:ops:0:Eq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 338,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_count_substring_with_equal_ends_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_count_substring_with_equal_ends_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_count_substring_with_equal_ends_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_count_substring_with_equal_ends_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_count_substring_with_equal_ends_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:8:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "1:7:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "2:7:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 526
+    },
+    {
+      "task_id": 342,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 1,
+      "passed_reference": 1,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_find_minimum_range_returns[llm_slot-1]"
+      ],
+      "mutants": [
+        {
+          "id": "0:23:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "1:26:op:None:Add",
+          "status": "survived"
+        },
+        {
+          "id": "2:25:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 688
+    },
+    {
+      "task_id": 343,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 8,
+      "passed_reference": 8,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_dig_let_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_dig_let_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_dig_let_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_dig_let_returns[llm_slot-6]",
+        "pytestgen_tests/test_benchmark.py::test_dig_let_returns[llm_slot-7]",
+        "pytestgen_tests/test_benchmark.py::test_dig_let_returns[llm_slot-8]"
+      ],
+      "mutants": [
+        {
+          "id": "0:7:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "1:5:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 456
+    },
+    {
+      "task_id": 349,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 11,
+      "passed_reference": 11,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_check_all_chars_different",
+        "pytestgen_tests/test_benchmark.py::test_check_all_chars_same",
+        "pytestgen_tests/test_benchmark.py::test_check_empty_string",
+        "pytestgen_tests/test_benchmark.py::test_check_mixed_chars",
+        "pytestgen_tests/test_benchmark.py::test_check_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_check_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_check_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_check_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_check_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_check_returns[llm_slot-6]",
+        "pytestgen_tests/test_benchmark.py::test_check_single_char_string"
+      ],
+      "mutants": [
+        {
+          "id": "0:4:op:None:Or",
+          "status": "killed"
+        },
+        {
+          "id": "1:4:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "2:4:ops:0:Eq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 820
+    },
+    {
+      "task_id": 354,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:2:op:None:Sub",
+          "status": "survived"
+        },
+        {
+          "id": "2:2:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 357,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 360,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:3:op:None:Sub",
+          "status": "survived"
+        },
+        {
+          "id": "2:2:op:None:Sub",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 368,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Mult",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 370,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 371,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_smallest_missing_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_smallest_missing_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_smallest_missing_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_smallest_missing_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_smallest_missing_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_smallest_missing_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:8:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "1:2:ops:0:Gt",
+          "status": "survived"
+        },
+        {
+          "id": "2:4:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 2671
+    },
+    {
+      "task_id": 377,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_remove_char_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_remove_char_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_remove_char_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_remove_char_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_remove_char_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_remove_char_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:6:op:None:Sub",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 384
+    },
+    {
+      "task_id": 384,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_frequency_of_smallest_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_frequency_of_smallest_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_frequency_of_smallest_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_frequency_of_smallest_returns[llm_slot-4]"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:ops:0:Lt",
+          "status": "killed"
+        },
+        {
+          "id": "1:8:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "2:9:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 621
+    },
+    {
+      "task_id": 388,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_highest_power_of_2_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_highest_power_of_2_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_highest_power_of_2_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_highest_power_of_2_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_highest_power_of_2_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:4:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "1:4:op:None:Sub",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 415
+    },
+    {
+      "task_id": 390,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 399,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 401,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 406,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 1,
+      "llm_tokens": 348
+    },
+    {
+      "task_id": 423,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_get_maxgold_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_get_maxgold_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_get_maxgold_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_get_maxgold_returns[llm_slot-4]"
+      ],
+      "mutants": [
+        {
+          "id": "0:17:op:None:Add",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "1:10:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "2:17:op:None:Add",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "3:4:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "4:10:op:None:Or",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 1387
+    },
+    {
+      "task_id": 424,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Sub",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 425,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 7,
+      "passed_reference": 7,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:4:ops:0:In",
+          "status": "survived"
+        },
+        {
+          "id": "1:5:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 19,
+      "llm_tokens": 9751
+    },
+    {
+      "task_id": 435,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 444,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:5:op:None:Sub",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 12,
+      "llm_tokens": 4707
+    },
+    {
+      "task_id": 455,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 2,
+      "passed_reference": 2,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_check_monthnumb_number_returns[z3-2]"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:value:None:Constant",
+          "status": "killed"
+        },
+        {
+          "id": "1:2:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "2:2:ops:0:Eq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 456,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 458,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:op:None:Mult",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 465,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:2:ops:0:IsNot",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 467,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 2,
+      "passed_reference": 2,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_decimal_to_octal_returns[z3-1]"
+      ],
+      "mutants": [
+        {
+          "id": "0:5:ops:0:NotEq",
+          "status": "unverified_mutant"
+        },
+        {
+          "id": "1:8:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "2:7:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 475,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 481,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 10,
+      "passed_reference": 10,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_large_numbers",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_negative_sum",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_positive_sum",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_raises[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_raises[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_raises[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_raises[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_raises[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_is_subset_sum_single_element"
+      ],
+      "mutants": [
+        {
+          "id": "0:8:op:None:Sub",
+          "status": "killed"
+        },
+        {
+          "id": "1:6:ops:0:Gt",
+          "status": "killed"
+        },
+        {
+          "id": "2:2:ops:0:Eq",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 4,
+      "llm_tokens": 2238
+    },
+    {
+      "task_id": 489,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_frequency_of_largest_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_frequency_of_largest_returns[llm_slot-5]"
+      ],
+      "mutants": [
+        {
+          "id": "0:9:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "1:8:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "2:5:ops:0:Gt",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 662
+    },
+    {
+      "task_id": 491,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:3:op:None:Sub",
+          "status": "survived"
+        },
+        {
+          "id": "2:3:op:None:Sub",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 494,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 497,
+      "status": "no_passing_tests",
+      "detail": "",
+      "generated_executed": 0,
+      "passed_reference": 0,
+      "tests_with_kills": [],
+      "mutants": [
+        {
+          "id": "0:3:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "1:4:op:None:Mult",
+          "status": "survived"
+        },
+        {
+          "id": "2:4:op:None:Add",
+          "status": "survived"
+        }
+      ],
+      "llm_requests": 0,
+      "llm_tokens": 0
+    },
+    {
+      "task_id": 501,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 12,
+      "passed_reference": 12,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_ngcd_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_ngcd_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_ngcd_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_ngcd_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_ngcd_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_ngcd_returns[llm_slot-6]",
+        "pytestgen_tests/test_benchmark.py::test_num_comm_div_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_num_comm_div_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_num_comm_div_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_num_comm_div_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_num_comm_div_returns[llm_slot-5]",
+        "pytestgen_tests/test_benchmark.py::test_num_comm_div_returns[llm_slot-6]"
+      ],
+      "mutants": [
+        {
+          "id": "0:3:op:None:And",
+          "status": "not_detected_by_mbpp"
+        },
+        {
+          "id": "1:15:op:None:Add",
+          "status": "killed"
+        },
+        {
+          "id": "2:14:ops:0:Eq",
+          "status": "killed"
+        },
+        {
+          "id": "3:6:op:None:Add",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 2,
+      "llm_tokens": 1196
+    },
+    {
+      "task_id": 507,
+      "status": "ok",
+      "detail": "",
+      "generated_executed": 6,
+      "passed_reference": 6,
+      "tests_with_kills": [
+        "pytestgen_tests/test_benchmark.py::test_remove_words_returns[llm_slot-1]",
+        "pytestgen_tests/test_benchmark.py::test_remove_words_returns[llm_slot-2]",
+        "pytestgen_tests/test_benchmark.py::test_remove_words_returns[llm_slot-3]",
+        "pytestgen_tests/test_benchmark.py::test_remove_words_returns[llm_slot-4]",
+        "pytestgen_tests/test_benchmark.py::test_remove_words_returns[llm_slot-5]"
+      ],
+      "mutants": [
+        {
+          "id": "0:3:ops:0:In",
+          "status": "killed"
+        }
+      ],
+      "llm_requests": 1,
+      "llm_tokens": 562
+    }
+  ]
+}

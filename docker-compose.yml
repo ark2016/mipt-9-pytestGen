@@ -1,0 +1,109 @@
+# pytestgen demo stack (Compose v2, no `version:` key).
+#
+# One command (CPU only, no GPU, ~6 GB RAM for the model):
+#
+#   docker compose run --rm --build pytestgen
+#
+# The first run downloads the model (~1.1 GB) into the `llm-models` volume; later runs are
+# offline. Results: ./out/test_pricing_generated.py, ./out/report.md, ./out/report.json.
+# Stop the model server afterwards with `docker compose down` (add -v to drop the model cache).
+#
+# Every knob below is an environment variable with a default; put overrides in `.env`
+# next to this file (see .env.example) or export them. The 3B model: see scripts/llm-3b.env.
+
+name: pytestgen
+
+services:
+  # Writes into ./out as uid 1000 (the user of the pytestgen image). Docker creates a missing
+  # bind-mount directory as root on Linux, so fix its owner first. On Docker Desktop
+  # (Windows/macOS) chown is a no-op and any bind mount is writable anyway.
+  init-out:
+    image: busybox:1.37.0
+    user: "0:0"
+    command:
+      - sh
+      - -c
+      - mkdir -p /out/.cache && (chown -R 1000:1000 /out || true) && (chmod -R a+rwX /out || true)
+    volumes:
+      - ./out:/out
+    restart: "no"
+
+  # llama.cpp OpenAI-compatible server (CPU build). `-hf` downloads the GGUF from Hugging Face
+  # on the first start into LLAMA_CACHE (the named volume), so later starts need no network.
+  llm:
+    image: ghcr.io/ggml-org/llama.cpp:server-b11459
+    command:
+      - --hf-repo
+      - ${LLM_HF_REPO:-Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF}:${LLM_HF_QUANT:-Q4_K_M}
+      - --alias
+      - ${LLM_MODEL_NAME:-qwen2.5-coder-1.5b-instruct}
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - ${LLM_CTX_SIZE:-8192}
+      - --parallel
+      - "1" # one slot: the whole context belongs to one request, pytestgen is sequential
+      - --threads
+      - ${LLM_THREADS:--1} # -1: let llama.cpp pick (physical cores)
+      - --jinja # use the chat template embedded in the GGUF
+      - --no-webui
+    environment:
+      LLAMA_CACHE: /models
+    volumes:
+      - llm-models:/models
+    ports:
+      # Reachable from the host too: http://localhost:8080/v1 (bound to loopback only).
+      - "127.0.0.1:${LLM_HOST_PORT:-8080}:8080"
+    mem_limit: ${LLM_MEM_LIMIT:-6g}
+    healthcheck:
+      # The image ships curl. /health is 503 while the model downloads and loads, so a long
+      # start_period keeps those failures from counting.
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 900s
+    restart: unless-stopped
+
+  pytestgen:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Locally built tag. To use a published image instead:
+    #   PYTESTGEN_IMAGE=ark2016/pytestgen:<tag> docker compose run --rm pytestgen
+    image: ${PYTESTGEN_IMAGE:-pytestgen:local}
+    depends_on:
+      llm:
+        condition: service_healthy
+      init-out:
+        condition: service_completed_successfully
+    environment:
+      PYTESTGEN_LLM_BASE_URL: http://llm:8080/v1
+      PYTESTGEN_LLM_MODEL: ${LLM_MODEL_NAME:-qwen2.5-coder-1.5b-instruct}
+      PYTESTGEN_LLM_JSON_MODE: ${PYTESTGEN_LLM_JSON_MODE:-json_schema}
+      PYTESTGEN_LOG_LEVEL: ${PYTESTGEN_LOG_LEVEL:-WARNING}
+      # The image default is /home/app/.pytestgen/cache (writable, but lost with the container).
+      # Keeping the LLM cache in ./out makes a repeated demo run instant; pass --no-cache to bypass.
+      PYTESTGEN_CACHE_DIR: /work/out/.cache
+    volumes:
+      # Read-only is fine: the sandbox runs generated tests in a temporary copy of the project,
+      # and the output files go outside the project root.
+      - ./examples:/work/project:ro
+      - ./out:/work/out
+    # Default command = the demo (the image ENTRYPOINT is `pytestgen`).
+    command:
+      - generate
+      - project/shop/pricing.py
+      - --project-root
+      - project
+      - --output
+      - out/test_pricing_generated.py
+      - --report-md
+      - out/report.md
+      - --report-json
+      - out/report.json
+
+volumes:
+  llm-models:

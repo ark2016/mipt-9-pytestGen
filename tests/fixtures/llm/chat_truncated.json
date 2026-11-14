@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```python\nimport pytest\n\nfrom calc import clamp\n\n\ndef test_clamp_inside():\n    assert clamp(5, 0, 10) == 5\n\n\ndef test_clamp_swapped_bounds():\n    with pytest.raises(ValueError):\n        clamp("
+      }
+    }
+  ],
+  "created": 1760000000,
+  "model": "qwen2.5-coder-1.5b-instruct",
+  "system_fingerprint": "b4991-5f8c1a2",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 64,
+    "prompt_tokens": 318,
+    "total_tokens": 382
+  },
+  "id": "chatcmpl-uW5dN8eHq2",
+  "timings": {
+    "prompt_n": 318,
+    "prompt_ms": 412.7,
+    "predicted_n": 64,
+    "predicted_ms": 3180.4,
+    "predicted_per_second": 20.12
+  }
+}
